@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>WebSocket Test</title>
+</head>
+<body>
+    <p>Welcome</p>
+    <button>데이터 전송</button>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.1.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          var SERVER_SOCKET_API = "/ws";
+          var socket = new SockJS(SERVER_SOCKET_API);
+          var client = Stomp.over(socket);
+
+          client.connect({}, function () {
+
+            client.subscribe('/topic/updateScenario', function (e) {
+              console.log(e);
+              var responseData = JSON.parse(e.body);
+              var eventDom = document.createElement('p');
+              eventDom.appendChild(document.createTextNode(responseData.zoneId + ' : ' + responseData.scenarioState + ' : ' + responseData.issuanceTime));
+              document.body.appendChild(eventDom);
+            });
+
+          });
+
+          document.querySelector('button').addEventListener('click', function (e) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', 'http://localhost:8082/websocket/update/scenario');
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send('{"zoneId": 1, "scenarioState": "NORMAL", "issuanceTime": null}');
+            xhr.onload = function () {
+              if (xhr.status == 200) {
+                console.log("success");
+              } else {
+                console.log("fail");
+              }
+            }
+          });
+        });
+    </script>
+</body>
+</html>
