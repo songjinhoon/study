@@ -42,7 +42,7 @@ public class Usr {
     public static Usr create(UsrDto.Insert insert) {
         return Usr.builder()
                 .nm(insert.getNm())
-                .pwd(insert.getPwd())
+                .pwd(insert.getEncodingPwd())
                 .nickNm(insert.getNickNm())
                 .useAt(insert.getUseAt())
                 .auths(insert.getAuths())
