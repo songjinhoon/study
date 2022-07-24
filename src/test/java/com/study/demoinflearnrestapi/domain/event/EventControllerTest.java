@@ -2,6 +2,7 @@ package com.study.demoinflearnrestapi.domain.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -17,7 +18,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@RunWith(SpringRunner.class)
 //@WebMvcTest
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,7 +32,7 @@ public class EventControllerTest {
     /*@MockBean
     EventRepository eventRepository;*/
 
-    @Test
+    @Test @DisplayName("파라미터가 비어있는 경우 에러 발생")
     void create_valid_empty_param() throws Exception {
         // given
         EventDto eventDto = EventDto.builder().build();
@@ -46,7 +46,7 @@ public class EventControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    @Test
+    @Test @DisplayName("불필요한 파라미터가 존재하는 경우 에러 발생")
     void create_valid_add_param() throws Exception {
         // given
         Event event = Event.builder()
@@ -75,7 +75,7 @@ public class EventControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    @Test
+    @Test @DisplayName("파라미터의 필드가 부족한 경우 에러 발생")
     void create_valid_lack_param() throws Exception {
         // given
         EventDto event = EventDto.builder()
@@ -99,7 +99,7 @@ public class EventControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    @Test
+    @Test @DisplayName("비니지스 로직에 의한 파라미터값이 유효하지 않을 경우 에러 발생")
     void create_valid_wrong_param() throws Exception {
         // given
         EventDto event = EventDto.builder()
@@ -125,7 +125,7 @@ public class EventControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
-    @Test
+    @Test @DisplayName("event 정상 저장")
     public void create_success() throws Exception {
         EventDto event = EventDto.builder()
                 .name("spring")

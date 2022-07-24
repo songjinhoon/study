@@ -25,6 +25,10 @@ public class EventController {
 
     @PostMapping
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
+        if (errors.hasErrors()) {
+            // MethodArgumentNotValidException.class, HttpMessageNotReadableException.class
+            return ResponseEntity.internalServerError().build();
+        }
         eventValidator.validate(eventDto, errors);
         if (errors.hasErrors()) {
             return ResponseEntity.internalServerError().build();
