@@ -3,11 +3,13 @@ package com.study.demoinflearnrestapi.domain.event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -19,8 +21,15 @@ public class EventController {
 
     private final EventRepository eventRepository;
 
+    private final EventValidator eventValidator;
+
     @PostMapping
-    public ResponseEntity createEvent(@RequestBody EventDto eventDto) {
+    public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
+        eventValidator.validate(eventDto, errors);
+        if (errors.hasErrors()) {
+            return ResponseEntity.internalServerError().build();
+        }
+
         Event event = EventMapper.INSTANCE.toEvent(eventDto);
         Event saveEvent = eventRepository.save(event);
         URI uri = linkTo(EventController.class).slash(saveEvent.getId()).toUri();
