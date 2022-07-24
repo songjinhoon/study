@@ -40,10 +40,16 @@ public class EventControllerTest {
         // when - then
         mockMvc.perform(post("/api/event")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .accept(MediaTypes.HAL_JSON)
+//                        .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("errors").exists());
+                /*.andExpect(jsonPath("$[0].objectName").exists())
+                .andExpect(jsonPath("$[0].field").exists())
+                .andExpect(jsonPath("$[0].defaultMessage").exists())
+                .andExpect(jsonPath("$[0].code").exists());
+                .andExpect(jsonPath("$[0].rejectedValue").exists());*/
     }
 
     @Test @DisplayName("불필요한 파라미터가 존재하는 경우 에러 발생")
@@ -69,10 +75,11 @@ public class EventControllerTest {
         // when - then
         mockMvc.perform(post("/api/event/")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .accept(MediaTypes.HAL_JSON)
+//                        .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("errors").exists());
     }
 
     @Test @DisplayName("파라미터의 필드가 부족한 경우 에러 발생")
@@ -93,10 +100,11 @@ public class EventControllerTest {
         // when - then
         mockMvc.perform(post("/api/event/")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .accept(MediaTypes.HAL_JSON)
+//                        .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("errors").exists());
     }
 
     @Test @DisplayName("비니지스 로직에 의한 파라미터값이 유효하지 않을 경우 에러 발생")
@@ -119,10 +127,11 @@ public class EventControllerTest {
         // when - then
         mockMvc.perform(post("/api/event/")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .accept(MediaTypes.HAL_JSON)
+//                        .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("errors").exists());
     }
 
     @Test @DisplayName("event 정상 저장")
@@ -142,16 +151,19 @@ public class EventControllerTest {
 
         mockMvc.perform(post("/api/event/")
                         .contentType(MediaType.APPLICATION_JSON_UTF8)
-                        .accept(MediaTypes.HAL_JSON)
+//                        .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+                .andExpect(jsonPath("code").exists())
+                .andExpect(jsonPath("message").exists())
+                .andExpect(jsonPath("data").exists())
+                .andExpect(jsonPath("errors").exists());
+                /*.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andExpect(jsonPath("id").value(Matchers.not(100))) // 아이디 생성 규칙을 따라갈것이고
                 .andExpect(jsonPath("free").value(Matchers.not(true))) // boolean 의 기본 값인 false가 되겠지.
-                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));
+                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));*/
     }
 
 }
