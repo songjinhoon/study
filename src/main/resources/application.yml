@@ -1,0 +1,4 @@
+spring:
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true # dto의 파라미터 바인딩을 느슨하게 하라면 제거
