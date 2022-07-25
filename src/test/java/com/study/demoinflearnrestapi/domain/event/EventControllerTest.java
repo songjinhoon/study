@@ -159,6 +159,10 @@ public class EventControllerTest {
                 .andExpect(jsonPath("code").exists())
                 .andExpect(jsonPath("message").exists())
                 .andExpect(jsonPath("data").exists())
+                .andExpect(jsonPath("data[0].id").exists())
+                .andExpect(jsonPath("data[0].free").value(false))
+                .andExpect(jsonPath("data[0].eventStatus").value(EventStatus.DRAFT.name()))
+                .andExpect(jsonPath("data[0].offline").value(true))
                 .andExpect(jsonPath("errors").exists());
                 /*.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andExpect(jsonPath("id").value(Matchers.not(100))) // 아이디 생성 규칙을 따라갈것이고

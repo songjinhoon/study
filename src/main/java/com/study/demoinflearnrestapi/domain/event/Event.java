@@ -28,6 +28,21 @@ public class Event {
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRAFT;
 
+    public void update() {
+        // Update free
+        if (this.basePrice == 0 && this.maxPrice == 0) {
+            this.free = true;
+        } else {
+            this.free = false;
+        }
+        // Update location
+        if (this.location == null || this.location.isBlank()) {
+            this.offline = false;
+        } else {
+            this.offline = true;
+        }
+
+    }
 }
 /*
 * @Data -> Entity에다가는 쓰면안됨 Equals and Hashcode를 구현할때 모든 필드를 다 참조하기 때문에 연관관계 상호 참조때문에 스택 오버 플로우 발생 여지가 있음
