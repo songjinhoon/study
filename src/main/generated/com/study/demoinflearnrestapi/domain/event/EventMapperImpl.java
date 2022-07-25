@@ -4,7 +4,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-07-24T15:26:17+0900",
+    date = "2022-07-26T00:29:10+0900",
     comments = "version: 1.5.1.Final, compiler: javac, environment: Java 11.0.15 (Amazon.com Inc.)"
 )
 public class EventMapperImpl implements EventMapper {
