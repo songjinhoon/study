@@ -29,7 +29,7 @@ public class EventController {
     private final EventValidator eventValidator;
 
     @PostMapping
-    public ResponseEntity<ResponseDto<?>> createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
+    public ResponseEntity<?> createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
         if (errors.hasErrors()) {
             // MethodArgumentNotValidException.class, HttpMessageNotReadableException.class
             return ResponseEntity.badRequest().body(ResponseDto.builder()
@@ -52,16 +52,19 @@ public class EventController {
 
         WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class).slash(saveEvent.getId());
         URI createdUri = selfLinkBuilder.toUri();
-        EntityModel<Event> entityModel = EntityModel.of(event);
-        entityModel.add(selfLinkBuilder.withSelfRel());
-        entityModel.add(linkTo(EventController.class).withRel("query-events"));
-        entityModel.add(selfLinkBuilder.withRel("update-event"));
 
-        return ResponseEntity.created(createdUri).body(ResponseDto.builder()
+        EventResource eventResource = new EventResource(event, ResponseMessage.SUCCESS_CREATE.getCode(), ResponseMessage.SUCCESS_CREATE.getValue());
+        eventResource.add(selfLinkBuilder.withSelfRel());
+        eventResource.add(linkTo(EventController.class).withRel("query-events"));
+        eventResource.add(selfLinkBuilder.withRel("update-events"));
+
+        return ResponseEntity.created(createdUri).body(eventResource);
+
+        /*return ResponseEntity.created(createdUri).body(ResponseDto.builder()
                 .code(ResponseMessage.SUCCESS_CREATE.getCode())
                 .message(ResponseMessage.SUCCESS_CREATE.getValue())
-                .data(Collections.singletonList(entityModel))
-                .build());
+                .data(Collections.singletonList(eventResource))
+                .build());*/
     }
 
 }

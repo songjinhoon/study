@@ -3,6 +3,7 @@ package com.study.demoinflearnrestapi.common.response;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Builder
@@ -15,8 +16,11 @@ public class ResponseDto<T> {
     @Builder.Default
     private String message = ResponseMessage.SUCCESS_READ.getValue();
 
+    /*@Builder.Default
+    private Object object = new HashMap<>();
+
     @Builder.Default
-    private List<T> data = List.of();
+    private List<T> data = List.of();*/
 
     @Builder.Default
     private Object errors = List.of();

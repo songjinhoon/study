@@ -1,11 +1,14 @@
 package com.study.demoinflearnrestapi.domain.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.study.demoinflearnrestapi.common.RestDocsConfig;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,13 +16,20 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
+import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-//@WebMvcTest
-@SpringBootTest
+// RestDocs
+@Import(RestDocsConfig.class)
+@AutoConfigureRestDocs
+//
 @AutoConfigureMockMvc
+@SpringBootTest
 public class EventControllerTest {
 
     @Autowired
@@ -27,9 +37,6 @@ public class EventControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
-
-    /*@MockBean
-    EventRepository eventRepository;*/
 
     @Test
     @DisplayName("파라미터가 비어있는 경우 에러 발생")
@@ -155,22 +162,30 @@ public class EventControllerTest {
 
         mockMvc.perform(post("/api/event/")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaTypes.HAL_JSON_VALUE)
+                        .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(jsonPath("code").exists())
                 .andExpect(jsonPath("message").exists())
-                .andExpect(jsonPath("data").exists())
-                .andExpect(jsonPath("data[0].id").exists())
-                .andExpect(jsonPath("data[0].free").value(false))
-                .andExpect(jsonPath("data[0].eventStatus").value(EventStatus.DRAFT.name()))
-                .andExpect(jsonPath("data[0].offline").value(true))
-                .andExpect(jsonPath("errors").exists())
-                .andExpect(jsonPath("data[0].links[0].rel").exists())
-                .andExpect(jsonPath("data[0].links[1].rel").exists())
-                .andExpect(jsonPath("data[0].links[2].rel").exists())
+                .andExpect(jsonPath("event.id").exists())
+                .andExpect(jsonPath("event.free").value(false))
+                .andExpect(jsonPath("event.eventStatus").value(EventStatus.DRAFT.name()))
+                .andExpect(jsonPath("event.offline").value(true))
+                .andExpect(jsonPath("errors").doesNotExist())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.query-events").exists())
+                .andExpect(jsonPath("_links.update-events").exists())
+                .andDo(
+                        document("create-event",
+
+                                links(
+                                        linkWithRel("self").description("link to self"),
+                                        linkWithRel("query-events").description("link to query"),
+                                        linkWithRel("update-events").description("link to update")
+                                )
+                        ))
         ;
     }
 
