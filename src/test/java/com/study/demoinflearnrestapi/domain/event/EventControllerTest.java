@@ -1,7 +1,6 @@
 package com.study.demoinflearnrestapi.domain.event;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,8 @@ public class EventControllerTest {
     /*@MockBean
     EventRepository eventRepository;*/
 
-    @Test @DisplayName("파라미터가 비어있는 경우 에러 발생")
+    @Test
+    @DisplayName("파라미터가 비어있는 경우 에러 발생")
     void create_valid_empty_param() throws Exception {
         // given
         EventDto eventDto = EventDto.builder().build();
@@ -52,7 +52,8 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$[0].rejectedValue").exists());*/
     }
 
-    @Test @DisplayName("불필요한 파라미터가 존재하는 경우 에러 발생")
+    @Test
+    @DisplayName("불필요한 파라미터가 존재하는 경우 에러 발생")
     void create_valid_add_param() throws Exception {
         // given
         Event event = Event.builder()
@@ -82,7 +83,8 @@ public class EventControllerTest {
                 .andExpect(jsonPath("errors").exists());
     }
 
-    @Test @DisplayName("파라미터의 필드가 부족한 경우 에러 발생")
+    @Test
+    @DisplayName("파라미터의 필드가 부족한 경우 에러 발생")
     void create_valid_lack_param() throws Exception {
         // given
         EventDto event = EventDto.builder()
@@ -107,7 +109,8 @@ public class EventControllerTest {
                 .andExpect(jsonPath("errors").exists());
     }
 
-    @Test @DisplayName("비니지스 로직에 의한 파라미터값이 유효하지 않을 경우 에러 발생")
+    @Test
+    @DisplayName("비니지스 로직에 의한 파라미터값이 유효하지 않을 경우 에러 발생")
     void create_valid_wrong_param() throws Exception {
         // given
         EventDto event = EventDto.builder()
@@ -134,7 +137,8 @@ public class EventControllerTest {
                 .andExpect(jsonPath("errors").exists());
     }
 
-    @Test @DisplayName("event 정상 저장")
+    @Test
+    @DisplayName("event 정상 저장")
     public void create_success() throws Exception {
         EventDto event = EventDto.builder()
                 .name("spring")
@@ -150,8 +154,8 @@ public class EventControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/event/")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                        .accept(MediaTypes.HAL_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.HAL_JSON_VALUE)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
                 .andExpect(status().isCreated())
@@ -163,11 +167,11 @@ public class EventControllerTest {
                 .andExpect(jsonPath("data[0].free").value(false))
                 .andExpect(jsonPath("data[0].eventStatus").value(EventStatus.DRAFT.name()))
                 .andExpect(jsonPath("data[0].offline").value(true))
-                .andExpect(jsonPath("errors").exists());
-                /*.andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-                .andExpect(jsonPath("id").value(Matchers.not(100))) // 아이디 생성 규칙을 따라갈것이고
-                .andExpect(jsonPath("free").value(Matchers.not(true))) // boolean 의 기본 값인 false가 되겠지.
-                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()));*/
+                .andExpect(jsonPath("errors").exists())
+                .andExpect(jsonPath("data[0].links[0].rel").exists())
+                .andExpect(jsonPath("data[0].links[1].rel").exists())
+                .andExpect(jsonPath("data[0].links[2].rel").exists())
+        ;
     }
 
 }
