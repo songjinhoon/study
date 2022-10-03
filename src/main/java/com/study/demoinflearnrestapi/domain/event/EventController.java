@@ -3,7 +3,7 @@ package com.study.demoinflearnrestapi.domain.event;
 import com.study.demoinflearnrestapi.common.response.ResponseDto;
 import com.study.demoinflearnrestapi.common.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.Collections;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -57,6 +56,7 @@ public class EventController {
         eventResource.add(selfLinkBuilder.withSelfRel());
         eventResource.add(linkTo(EventController.class).withRel("query-events"));
         eventResource.add(selfLinkBuilder.withRel("update-events"));
+        eventResource.add(Link.of("/docs/index.html#resources-events-create", "profile"));
 
         return ResponseEntity.created(createdUri).body(eventResource);
 

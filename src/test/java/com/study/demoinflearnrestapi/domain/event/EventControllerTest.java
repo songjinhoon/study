@@ -16,10 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -37,7 +38,7 @@ public class EventControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
-
+/*
     @Test
     @DisplayName("파라미터가 비어있는 경우 에러 발생")
     void create_valid_empty_param() throws Exception {
@@ -52,11 +53,11 @@ public class EventControllerTest {
                 .andDo(print())
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("errors").exists());
-                /*.andExpect(jsonPath("$[0].objectName").exists())
+                .andExpect(jsonPath("$[0].objectName").exists())
                 .andExpect(jsonPath("$[0].field").exists())
                 .andExpect(jsonPath("$[0].defaultMessage").exists())
                 .andExpect(jsonPath("$[0].code").exists());
-                .andExpect(jsonPath("$[0].rejectedValue").exists());*/
+                .andExpect(jsonPath("$[0].rejectedValue").exists());
     }
 
     @Test
@@ -143,7 +144,7 @@ public class EventControllerTest {
                 .andExpect(status().isInternalServerError())
                 .andExpect(jsonPath("errors").exists());
     }
-
+*/
     @Test
     @DisplayName("event 정상 저장")
     public void create_success() throws Exception {
@@ -174,16 +175,56 @@ public class EventControllerTest {
                 .andExpect(jsonPath("event.eventStatus").value(EventStatus.DRAFT.name()))
                 .andExpect(jsonPath("event.offline").value(true))
                 .andExpect(jsonPath("errors").doesNotExist())
-                .andExpect(jsonPath("_links.self").exists())
-                .andExpect(jsonPath("_links.query-events").exists())
-                .andExpect(jsonPath("_links.update-events").exists())
                 .andDo(
                         document("create-event",
-
                                 links(
                                         linkWithRel("self").description("link to self"),
-                                        linkWithRel("query-events").description("link to query"),
-                                        linkWithRel("update-events").description("link to update")
+                                        linkWithRel("query-events").description("link to query events"),
+                                        linkWithRel("update-events").description("link to update events"),
+                                        linkWithRel("profile").description("link to profile")
+                                ),
+                                requestHeaders(
+                                        headerWithName(HttpHeaders.ACCEPT).description("accept header"),
+                                        headerWithName(HttpHeaders.CONTENT_TYPE).description("content type header")
+                                ),
+                                requestFields(
+                                        fieldWithPath("name").description("Name of new event"),
+                                        fieldWithPath("description").description("description of new event"),
+                                        fieldWithPath("beginEnrollmentDateTime").description("beginEnrollmentDateTime of new event"),
+                                        fieldWithPath("closeEnrollmentDateTime").description("closeEnrollmentDateTime of new event"),
+                                        fieldWithPath("beginEventDateTime").description("beginEventDateTime of new event"),
+                                        fieldWithPath("endEventDateTime").description("endEventDateTime of new event"),
+                                        fieldWithPath("location").description("location of new event"),
+                                        fieldWithPath("basePrice").description("basePrice of new event"),
+                                        fieldWithPath("maxPrice").description("maxPrice of new event"),
+                                        fieldWithPath("limitOfEnrollment").description("limitOfEnrollment of new event")
+                                ),
+                                responseHeaders(
+                                        headerWithName(HttpHeaders.LOCATION).description("Location header"),
+                                        headerWithName(HttpHeaders.CONTENT_TYPE).description("Content type header")
+                                ),
+//                                relaxedResponseFields(
+                                responseFields(
+                                        fieldWithPath("code").description("Code of new Event"),
+                                        fieldWithPath("message").description("Message of New Event"),
+                                        fieldWithPath("event.id").description("id of new event"),
+                                        fieldWithPath("event.name").description("Name of new event"),
+                                        fieldWithPath("event.description").description("description of new event"),
+                                        fieldWithPath("event.beginEnrollmentDateTime").description("beginEnrollmentDateTime of new event"),
+                                        fieldWithPath("event.closeEnrollmentDateTime").description("closeEnrollmentDateTime of new event"),
+                                        fieldWithPath("event.beginEventDateTime").description("beginEventDateTime of new event"),
+                                        fieldWithPath("event.endEventDateTime").description("endEventDateTime of new event"),
+                                        fieldWithPath("event.location").description("location of new event"),
+                                        fieldWithPath("event.basePrice").description("basePrice of new event"),
+                                        fieldWithPath("event.maxPrice").description("maxPrice of new event"),
+                                        fieldWithPath("event.limitOfEnrollment").description("limitOfEnrollment of new event"),
+                                        fieldWithPath("event.free").description("free of new event"),
+                                        fieldWithPath("event.offline").description("offline of new event"),
+                                        fieldWithPath("event.eventStatus").description("eventStatus of new event"),
+                                        fieldWithPath("_links.self.href").description("link to self"),
+                                        fieldWithPath("_links.query-events.href").description("link to query events"),
+                                        fieldWithPath("_links.update-events.href").description("link to update events"),
+                                        fieldWithPath("_links.profile.href").description("link to profile")
                                 )
                         ))
         ;
