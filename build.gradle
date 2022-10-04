@@ -33,8 +33,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
 
-    runtimeOnly 'com.h2database:h2'
-
+    testRuntimeOnly 'com.h2database:h2' // H2 Database TestScope 로 활용하겠다.
     runtimeOnly 'org.postgresql:postgresql'
 
     compileOnly 'org.projectlombok:lombok'
