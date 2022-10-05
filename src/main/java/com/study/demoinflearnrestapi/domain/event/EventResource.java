@@ -2,10 +2,7 @@ package com.study.demoinflearnrestapi.domain.event;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
-
-import java.util.Arrays;
 
 @Getter
 @Setter

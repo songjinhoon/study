@@ -40,85 +40,86 @@ public class EventControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
-/*
-    @Test
-    @DisplayName("파라미터가 비어있는 경우 에러 발생")
-    void create_valid_empty_param() throws Exception {
-        // given
-        EventDto eventDto = EventDto.builder().build();
 
-        // when - then
-        mockMvc.perform(post("/api/event")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                        .accept(MediaTypes.HAL_JSON)
-                        .content(objectMapper.writeValueAsString(eventDto)))
-                .andDo(print())
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("errors").exists());
-                .andExpect(jsonPath("$[0].objectName").exists())
-                .andExpect(jsonPath("$[0].field").exists())
-                .andExpect(jsonPath("$[0].defaultMessage").exists())
-                .andExpect(jsonPath("$[0].code").exists());
-                .andExpect(jsonPath("$[0].rejectedValue").exists());
-    }
+    /*
+        @Test
+        @DisplayName("파라미터가 비어있는 경우 에러 발생")
+        void create_valid_empty_param() throws Exception {
+            // given
+            EventDto eventDto = EventDto.builder().build();
 
-    @Test
-    @DisplayName("불필요한 파라미터가 존재하는 경우 에러 발생")
-    void create_valid_add_param() throws Exception {
-        // given
-        Event event = Event.builder()
-                .id(100)
-                .name("spring")
-                .description("spring rest api")
-                .beginEnrollmentDateTime(LocalDateTime.of(2022, 7, 2, 14, 21))
-                .closeEnrollmentDateTime(LocalDateTime.of(2022, 7, 3, 14, 21))
-                .beginEventDateTime(LocalDateTime.of(2022, 7, 4, 14, 21))
-                .endEventDateTime(LocalDateTime.of(2022, 7, 5, 14, 21))
-                .basePrice(100)
-                .maxPrice(200)
-                .limitOfEnrollment(100)
-                .location("강남역 D2 스타텁 팩토리")
-                .free(true)
-                .offline(false)
-                .eventStatus(EventStatus.PUBLISHED)
-                .build();
+            // when - then
+            mockMvc.perform(post("/api/event")
+                            .contentType(MediaType.APPLICATION_JSON_UTF8)
+    //                        .accept(MediaTypes.HAL_JSON)
+                            .content(objectMapper.writeValueAsString(eventDto)))
+                    .andDo(print())
+                    .andExpect(status().isInternalServerError())
+                    .andExpect(jsonPath("errors").exists());
+                    .andExpect(jsonPath("$[0].objectName").exists())
+                    .andExpect(jsonPath("$[0].field").exists())
+                    .andExpect(jsonPath("$[0].defaultMessage").exists())
+                    .andExpect(jsonPath("$[0].code").exists());
+                    .andExpect(jsonPath("$[0].rejectedValue").exists());
+        }
 
-        // when - then
-        mockMvc.perform(post("/api/event/")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                        .accept(MediaTypes.HAL_JSON)
-                        .content(objectMapper.writeValueAsString(event)))
-                .andDo(print())
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("errors").exists());
-    }
+        @Test
+        @DisplayName("불필요한 파라미터가 존재하는 경우 에러 발생")
+        void create_valid_add_param() throws Exception {
+            // given
+            Event event = Event.builder()
+                    .id(100)
+                    .name("spring")
+                    .description("spring rest api")
+                    .beginEnrollmentDateTime(LocalDateTime.of(2022, 7, 2, 14, 21))
+                    .closeEnrollmentDateTime(LocalDateTime.of(2022, 7, 3, 14, 21))
+                    .beginEventDateTime(LocalDateTime.of(2022, 7, 4, 14, 21))
+                    .endEventDateTime(LocalDateTime.of(2022, 7, 5, 14, 21))
+                    .basePrice(100)
+                    .maxPrice(200)
+                    .limitOfEnrollment(100)
+                    .location("강남역 D2 스타텁 팩토리")
+                    .free(true)
+                    .offline(false)
+                    .eventStatus(EventStatus.PUBLISHED)
+                    .build();
 
-    @Test
-    @DisplayName("파라미터의 필드가 부족한 경우 에러 발생")
-    void create_valid_lack_param() throws Exception {
-        // given
-        EventDto event = EventDto.builder()
-//                .name("spring")
-                .description("spring rest api")
-                .beginEnrollmentDateTime(LocalDateTime.of(2022, 7, 2, 14, 21))
-                .closeEnrollmentDateTime(LocalDateTime.of(2022, 7, 3, 14, 21))
-                .beginEventDateTime(LocalDateTime.of(2022, 7, 4, 14, 21))
-                .endEventDateTime(LocalDateTime.of(2022, 7, 5, 14, 21))
-                .basePrice(100)
-                .maxPrice(200)
-                .limitOfEnrollment(100)
-                .location("강남역 D2 스타텁 팩토리")
-                .build();
-        // when - then
-        mockMvc.perform(post("/api/event/")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                        .accept(MediaTypes.HAL_JSON)
-                        .content(objectMapper.writeValueAsString(event)))
-                .andDo(print())
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("errors").exists());
-    }
+            // when - then
+            mockMvc.perform(post("/api/event/")
+                            .contentType(MediaType.APPLICATION_JSON_UTF8)
+    //                        .accept(MediaTypes.HAL_JSON)
+                            .content(objectMapper.writeValueAsString(event)))
+                    .andDo(print())
+                    .andExpect(status().isInternalServerError())
+                    .andExpect(jsonPath("errors").exists());
+        }
 
+        @Test
+        @DisplayName("파라미터의 필드가 부족한 경우 에러 발생")
+        void create_valid_lack_param() throws Exception {
+            // given
+            EventDto event = EventDto.builder()
+    //                .name("spring")
+                    .description("spring rest api")
+                    .beginEnrollmentDateTime(LocalDateTime.of(2022, 7, 2, 14, 21))
+                    .closeEnrollmentDateTime(LocalDateTime.of(2022, 7, 3, 14, 21))
+                    .beginEventDateTime(LocalDateTime.of(2022, 7, 4, 14, 21))
+                    .endEventDateTime(LocalDateTime.of(2022, 7, 5, 14, 21))
+                    .basePrice(100)
+                    .maxPrice(200)
+                    .limitOfEnrollment(100)
+                    .location("강남역 D2 스타텁 팩토리")
+                    .build();
+            // when - then
+            mockMvc.perform(post("/api/event/")
+                            .contentType(MediaType.APPLICATION_JSON_UTF8)
+    //                        .accept(MediaTypes.HAL_JSON)
+                            .content(objectMapper.writeValueAsString(event)))
+                    .andDo(print())
+                    .andExpect(status().isInternalServerError())
+                    .andExpect(jsonPath("errors").exists());
+        }
+    */
     @Test
     @DisplayName("비니지스 로직에 의한 파라미터값이 유효하지 않을 경우 에러 발생")
     void create_valid_wrong_param() throws Exception {
@@ -139,14 +140,15 @@ public class EventControllerTest {
                 .build();
         // when - then
         mockMvc.perform(post("/api/event/")
-                        .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                        .accept(MediaTypes.HAL_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
-                .andExpect(status().isInternalServerError())
-                .andExpect(jsonPath("errors").exists());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("_links.index").exists())
+        ;
     }
-*/
+
     @Test
     @DisplayName("event 정상 저장")
     public void create_success() throws Exception {

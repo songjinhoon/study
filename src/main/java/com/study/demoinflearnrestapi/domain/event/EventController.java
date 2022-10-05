@@ -1,6 +1,6 @@
 package com.study.demoinflearnrestapi.domain.event;
 
-import com.study.demoinflearnrestapi.common.response.ResponseDto;
+import com.study.demoinflearnrestapi.common.response.ErrorResource;
 import com.study.demoinflearnrestapi.common.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.hateoas.Link;
@@ -30,20 +30,11 @@ public class EventController {
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
         if (errors.hasErrors()) {
-            // MethodArgumentNotValidException.class, HttpMessageNotReadableException.class
-            return ResponseEntity.badRequest().body(ResponseDto.builder()
-                    .code(ResponseMessage.NOT_VALID_REQUEST_DATA_EXCEPTION.getCode())
-                    .message(ResponseMessage.NOT_VALID_REQUEST_DATA_EXCEPTION.getValue())
-                    .errors(errors)
-                    .build());
+            return badRequest(errors);
         }
         eventValidator.validate(eventDto, errors);
         if (errors.hasErrors()) {
-            return ResponseEntity.badRequest().body(ResponseDto.builder()
-                    .code(ResponseMessage.NOT_VALID_REQUEST_DATA_EXCEPTION.getCode())
-                    .message(ResponseMessage.NOT_VALID_REQUEST_DATA_EXCEPTION.getValue())
-                    .errors(errors)
-                    .build());
+            return badRequest(errors);
         }
         Event event = EventMapper.INSTANCE.toEvent(eventDto);
         event.update();
@@ -59,12 +50,10 @@ public class EventController {
         eventResource.add(Link.of("/docs/index.html#resources-events-create", "profile"));
 
         return ResponseEntity.created(createdUri).body(eventResource);
+    }
 
-        /*return ResponseEntity.created(createdUri).body(ResponseDto.builder()
-                .code(ResponseMessage.SUCCESS_CREATE.getCode())
-                .message(ResponseMessage.SUCCESS_CREATE.getValue())
-                .data(Collections.singletonList(eventResource))
-                .build());*/
+    private ResponseEntity<?> badRequest(Errors errors) {
+        return ResponseEntity.badRequest().body(new ErrorResource(errors));
     }
 
 }
