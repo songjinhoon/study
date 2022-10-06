@@ -1,17 +1,16 @@
 package com.study.demoinflearnrestapi.domain.event;
 
 import com.study.demoinflearnrestapi.common.response.ErrorResource;
-import com.study.demoinflearnrestapi.common.response.ResponseMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -26,6 +25,14 @@ public class EventController {
     private final EventRepository eventRepository;
 
     private final EventValidator eventValidator;
+
+    @GetMapping
+    public ResponseEntity<?> queryEvents(Pageable pageable, PagedResourcesAssembler<Event> pagedResourcesAssembler) {
+        Page<Event> page = eventRepository.findAll(pageable);
+        var entityModels = pagedResourcesAssembler.toModel(page, EventResource::new);
+        entityModels.add(Link.of("/docs/index.html#resources-events-list", "profile"));
+        return ResponseEntity.ok(entityModels);
+    }
 
     @PostMapping
     public ResponseEntity<?> createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
@@ -43,12 +50,10 @@ public class EventController {
         WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class).slash(saveEvent.getId());
         URI createdUri = selfLinkBuilder.toUri();
 
-        EventResource eventResource = new EventResource(event, ResponseMessage.SUCCESS_CREATE.getCode(), ResponseMessage.SUCCESS_CREATE.getValue());
-        eventResource.add(selfLinkBuilder.withSelfRel());
+        EventResource eventResource = new EventResource(event);
+        eventResource.add(Link.of("/docs/index.html#resources-events-create", "profile"));
         eventResource.add(linkTo(EventController.class).withRel("query-events"));
         eventResource.add(selfLinkBuilder.withRel("update-events"));
-        eventResource.add(Link.of("/docs/index.html#resources-events-create", "profile"));
-
         return ResponseEntity.created(createdUri).body(eventResource);
     }
 

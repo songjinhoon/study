@@ -16,13 +16,14 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDateTime;
+import java.util.stream.IntStream;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.*;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.linkWithRel;
 import static org.springframework.restdocs.hypermedia.HypermediaDocumentation.links;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -40,6 +41,9 @@ public class EventControllerTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    EventRepository eventRepository;
 
     /*
         @Test
@@ -139,7 +143,7 @@ public class EventControllerTest {
                 .location("강남역 D2 스타텁 팩토리")
                 .build();
         // when - then
-        mockMvc.perform(post("/api/event/")
+        mockMvc.perform(post("/api/event")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
@@ -165,20 +169,17 @@ public class EventControllerTest {
                 .location("강남역 D2 스타텁 팩토리")
                 .build();
 
-        mockMvc.perform(post("/api/event/")
+        mockMvc.perform(post("/api/event")
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(jsonPath("code").exists())
-                .andExpect(jsonPath("message").exists())
-                .andExpect(jsonPath("event.id").exists())
-                .andExpect(jsonPath("event.free").value(false))
-                .andExpect(jsonPath("event.eventStatus").value(EventStatus.DRAFT.name()))
-                .andExpect(jsonPath("event.offline").value(true))
-                .andExpect(jsonPath("errors").doesNotExist())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("free").value(false))
+                .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))
+                .andExpect(jsonPath("offline").value(true))
                 .andDo(
                         document("create-event",
                                 links(
@@ -209,22 +210,20 @@ public class EventControllerTest {
                                 ),
 //                                relaxedResponseFields(
                                 responseFields(
-                                        fieldWithPath("code").description("Code of new Event"),
-                                        fieldWithPath("message").description("Message of New Event"),
-                                        fieldWithPath("event.id").description("id of new event"),
-                                        fieldWithPath("event.name").description("Name of new event"),
-                                        fieldWithPath("event.description").description("description of new event"),
-                                        fieldWithPath("event.beginEnrollmentDateTime").description("beginEnrollmentDateTime of new event"),
-                                        fieldWithPath("event.closeEnrollmentDateTime").description("closeEnrollmentDateTime of new event"),
-                                        fieldWithPath("event.beginEventDateTime").description("beginEventDateTime of new event"),
-                                        fieldWithPath("event.endEventDateTime").description("endEventDateTime of new event"),
-                                        fieldWithPath("event.location").description("location of new event"),
-                                        fieldWithPath("event.basePrice").description("basePrice of new event"),
-                                        fieldWithPath("event.maxPrice").description("maxPrice of new event"),
-                                        fieldWithPath("event.limitOfEnrollment").description("limitOfEnrollment of new event"),
-                                        fieldWithPath("event.free").description("free of new event"),
-                                        fieldWithPath("event.offline").description("offline of new event"),
-                                        fieldWithPath("event.eventStatus").description("eventStatus of new event"),
+                                        fieldWithPath("id").description("id of new event"),
+                                        fieldWithPath("name").description("Name of new event"),
+                                        fieldWithPath("description").description("description of new event"),
+                                        fieldWithPath("beginEnrollmentDateTime").description("beginEnrollmentDateTime of new event"),
+                                        fieldWithPath("closeEnrollmentDateTime").description("closeEnrollmentDateTime of new event"),
+                                        fieldWithPath("beginEventDateTime").description("beginEventDateTime of new event"),
+                                        fieldWithPath("endEventDateTime").description("endEventDateTime of new event"),
+                                        fieldWithPath("location").description("location of new event"),
+                                        fieldWithPath("basePrice").description("basePrice of new event"),
+                                        fieldWithPath("maxPrice").description("maxPrice of new event"),
+                                        fieldWithPath("limitOfEnrollment").description("limitOfEnrollment of new event"),
+                                        fieldWithPath("free").description("free of new event"),
+                                        fieldWithPath("offline").description("offline of new event"),
+                                        fieldWithPath("eventStatus").description("eventStatus of new event"),
                                         fieldWithPath("_links.self.href").description("link to self"),
                                         fieldWithPath("_links.query-events.href").description("link to query events"),
                                         fieldWithPath("_links.update-events.href").description("link to update events"),
@@ -232,6 +231,36 @@ public class EventControllerTest {
                                 )
                         ))
         ;
+    }
+
+    @Test
+    @DisplayName("30개의 이벤트를 10개씩 두번째 페이지 조회하기")
+    public void queryEvents() throws Exception {
+        // given
+        IntStream.range(0, 30).forEach(this::generateEvent);
+
+        // when - then
+        this.mockMvc.perform(get("/api/event")
+                        .param("page", "1")
+                        .param("size", "10")
+                        .param("sort", "name,DESC")
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("page").exists())
+                .andExpect(jsonPath("_embedded.eventList[0]._links.self").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.profile").exists())
+                .andDo(document("query-events"))
+        ;
+    }
+
+    private void generateEvent(int i) {
+        Event event = Event.builder()
+                .name("event " + i)
+                .description("test event")
+                .build();
+        eventRepository.save(event);
     }
 
 }

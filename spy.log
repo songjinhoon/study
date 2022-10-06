@@ -8,3 +8,5 @@
 1664783762360|0|statement|connection 10|url jdbc:h2:mem:593c3f3b-f097-4d00-b88b-e4b26fbcee3d|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
 1664784390484|1|statement|connection 10|url jdbc:h2:mem:19aa1834-9675-441e-bf9a-98568b2569fc|     drop table if exists event CASCADE |     drop table if exists event CASCADE 
 1664784390484|0|statement|connection 10|url jdbc:h2:mem:19aa1834-9675-441e-bf9a-98568b2569fc|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence
+1665020124932|0|statement|connection 9|url jdbc:h2:mem:testdb|     drop table if exists event CASCADE |     drop table if exists event CASCADE 
+1665020124933|0|statement|connection 9|url jdbc:h2:mem:testdb|     drop sequence if exists hibernate_sequence|     drop sequence if exists hibernate_sequence

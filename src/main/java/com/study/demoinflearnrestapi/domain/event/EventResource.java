@@ -1,10 +1,13 @@
 package com.study.demoinflearnrestapi.domain.event;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 
-@Getter
+import java.util.Arrays;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+
+/*@Getter
 @Setter
 public class EventResource extends RepresentationModel {
 
@@ -20,19 +23,13 @@ public class EventResource extends RepresentationModel {
         this.message = message;
     }
 
-}
-/*
+}*/
+
 public class EventResource extends EntityModel<Event> {
 
-    private String code;
-
-    private String message;
-
-    public EventResource(String code, String message, Event event, Link... links) {
+    public EventResource(Event event, Link... links) {
         super(event, Arrays.asList(links));
-        this.code = code;
-        this.message = message;
+        add(linkTo(EventController.class).slash(event.getId()).withSelfRel());
     }
 
 }
-*/

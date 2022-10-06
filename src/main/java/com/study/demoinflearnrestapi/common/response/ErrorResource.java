@@ -3,14 +3,15 @@ package com.study.demoinflearnrestapi.common.response;
 import com.study.demoinflearnrestapi.index.IndexController;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.EntityModel;
 import org.springframework.validation.Errors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
-@Getter @Setter
-public class ErrorResource extends RepresentationModel {
+@Getter
+@Setter
+public class ErrorResource extends EntityModel<Errors> {
 
     private String code;
 
