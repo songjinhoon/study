@@ -40,7 +40,7 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<?> queryEvents(Pageable pageable, PagedResourcesAssembler<Event> pagedResourcesAssembler) {
+    public ResponseEntity<?> get(Pageable pageable, PagedResourcesAssembler<Event> pagedResourcesAssembler) {
         Page<Event> page = eventRepository.findAll(pageable);
         var entityModels = pagedResourcesAssembler.toModel(page, EventResource::new);
         entityModels.add(Link.of("/docs/index.html#resources-events-list", "profile"));
@@ -48,7 +48,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
+    public ResponseEntity<?> post(@RequestBody @Valid EventDto eventDto, Errors errors) {
         if (errors.hasErrors()) {
             return badRequest(errors);
         }
