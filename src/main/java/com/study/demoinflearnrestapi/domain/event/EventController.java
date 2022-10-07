@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
@@ -25,6 +26,18 @@ public class EventController {
     private final EventRepository eventRepository;
 
     private final EventValidator eventValidator;
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> get(@PathVariable Integer id) {
+        Optional<Event> optionalEvent = eventRepository.findById(id);
+        if (optionalEvent.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        Event event = optionalEvent.get();
+        EventResource eventResource = new EventResource(event);
+        eventResource.add(Link.of("/docs/index.html#resources-events-get", "profile"));
+        return ResponseEntity.ok().body(eventResource);
+    }
 
     @GetMapping
     public ResponseEntity<?> queryEvents(Pageable pageable, PagedResourcesAssembler<Event> pagedResourcesAssembler) {

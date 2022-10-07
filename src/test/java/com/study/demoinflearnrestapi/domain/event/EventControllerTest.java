@@ -255,12 +255,38 @@ public class EventControllerTest {
         ;
     }
 
-    private void generateEvent(int i) {
+    @Test
+    @DisplayName("이벤트 단일 조회")
+    public void getEvent() throws Exception {
+        //given
+        Event event = this.generateEvent(100);
+
+        //when - then
+        this.mockMvc.perform(get("/api/event/{id}", event.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.profile").exists())
+                .andDo(document("get-an-event"))
+        ;
+    }
+
+    @Test
+    @DisplayName("이벤트 단일 조회 - 없는 경우")
+    public void getEvent404() throws Exception {
+        this.mockMvc.perform(get("/api/event/10000"))
+                .andExpect(status().isNotFound())
+        ;
+    }
+
+    private Event generateEvent(int i) {
         Event event = Event.builder()
                 .name("event " + i)
                 .description("test event")
                 .build();
-        eventRepository.save(event);
+        return eventRepository.save(event);
     }
 
 }
