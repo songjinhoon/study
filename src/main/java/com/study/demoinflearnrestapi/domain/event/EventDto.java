@@ -1,9 +1,6 @@
 package com.study.demoinflearnrestapi.domain.event;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -15,7 +12,7 @@ import java.time.LocalDateTime;
 *   생성자 어노테이션까지 추가해줌.
 * */
 @NoArgsConstructor @AllArgsConstructor
-@Builder @Getter // @Setter
+@Builder @Getter @Setter
 public class EventDto {
 
     @NotEmpty

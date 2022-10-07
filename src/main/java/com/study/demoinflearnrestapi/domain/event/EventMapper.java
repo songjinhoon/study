@@ -8,6 +8,8 @@ public interface EventMapper {
 
     EventMapper INSTANCE = Mappers.getMapper(EventMapper.class);
 
+    EventDto toEventDto(Event event);
+
     Event toEvent(EventDto eventDto);
 
 }

@@ -24,6 +24,7 @@ public class Event {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
+
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRAFT;
@@ -33,6 +34,18 @@ public class Event {
         this.free = this.basePrice == 0 && this.maxPrice == 0;
         // Update location
         this.offline = this.location != null && !this.location.isBlank();
+    }
+
+    public void update(EventDto eventDto) {
+        this.name = eventDto.getName();
+        this.description = eventDto.getDescription();
+        this.beginEnrollmentDateTime = eventDto.getBeginEnrollmentDateTime();
+        this.closeEnrollmentDateTime = eventDto.getCloseEnrollmentDateTime();
+        this.beginEventDateTime = eventDto.getBeginEventDateTime();
+        this.location = eventDto.getLocation();
+        this.basePrice = eventDto.getBasePrice();
+        this.maxPrice = eventDto.getMaxPrice();
+        this.limitOfEnrollment = eventDto.getLimitOfEnrollment();
     }
 }
 /*

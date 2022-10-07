@@ -124,9 +124,58 @@ public class EventControllerTest {
                     .andExpect(jsonPath("errors").exists());
         }
     */
+
+    @Test
+    @DisplayName("이벤트 단일 조회")
+    public void find() throws Exception {
+        //given
+        Event event = this.generateEvent(100);
+
+        //when - then
+        this.mockMvc.perform(get("/api/event/{id}", event.getId()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.profile").exists())
+                .andDo(document("get-an-event"))
+        ;
+    }
+
+    @Test
+    @DisplayName("이벤트 단일 조회 - 없는 경우")
+    public void find404() throws Exception {
+        this.mockMvc.perform(get("/api/event/10000"))
+                .andExpect(status().isNotFound())
+        ;
+    }
+
+    @Test
+    @DisplayName("이벤트 페이지 조회")
+    public void findPage() throws Exception {
+        // given
+        IntStream.range(0, 30).forEach(this::generateEvent);
+
+        // when - then
+        this.mockMvc.perform(get("/api/event")
+                        .param("page", "1")
+                        .param("size", "10")
+                        .param("sort", "name,DESC")
+                )
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("page").exists())
+                .andExpect(jsonPath("_embedded.eventList[0]._links.self").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.profile").exists())
+                .andDo(document("query-events"))
+        ;
+    }
+
     @Test
     @DisplayName("비니지스 로직에 의한 파라미터값이 유효하지 않을 경우 에러 발생")
-    void create_valid_wrong_param() throws Exception {
+    public void create_valid_wrong_param() throws Exception {
         // given
         EventDto event = EventDto.builder()
                 .name("spring")
@@ -234,58 +283,102 @@ public class EventControllerTest {
     }
 
     @Test
-    @DisplayName("30개의 이벤트를 10개씩 두번째 페이지 조회하기")
-    public void queryEvents() throws Exception {
-        // given
-        IntStream.range(0, 30).forEach(this::generateEvent);
+    @DisplayName("Event 수정")
+    public void update_success() throws Exception {
+        //given
+        String eventName = "Updated Event";
+        Event event = this.generateEvent(100);
+        EventDto eventDto = EventMapper.INSTANCE.toEventDto(event);
+        eventDto.setName(eventName);
 
-        // when - then
-        this.mockMvc.perform(get("/api/event")
-                        .param("page", "1")
-                        .param("size", "10")
-                        .param("sort", "name,DESC")
+        //when-then
+        mockMvc.perform(put("/api/event/{id}", event.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(eventDto))
+                        .accept(MediaTypes.HAL_JSON)
                 )
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("page").exists())
-                .andExpect(jsonPath("_embedded.eventList[0]._links.self").exists())
+                .andExpect(jsonPath("name").value(eventName))
                 .andExpect(jsonPath("_links.self").exists())
-                .andExpect(jsonPath("_links.profile").exists())
-                .andDo(document("query-events"))
+                .andDo(document("update-event"))
         ;
     }
 
     @Test
-    @DisplayName("이벤트 단일 조회")
-    public void getEvent() throws Exception {
+    @DisplayName("Event 수정 - 데이터가 비어있어서 실패")
+    public void update_400_empty() throws Exception {
         //given
+        String eventName = "Updated Event";
         Event event = this.generateEvent(100);
+        EventDto eventDto = new EventDto();
+        eventDto.setName(eventName);
 
-        //when - then
-        this.mockMvc.perform(get("/api/event/{id}", event.getId()))
+        //when-then
+        mockMvc.perform(put("/api/event/{id}", event.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(eventDto))
+                        .accept(MediaTypes.HAL_JSON)
+                )
                 .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("id").exists())
-                .andExpect(jsonPath("name").exists())
-                .andExpect(jsonPath("_links.self").exists())
-                .andExpect(jsonPath("_links.profile").exists())
-                .andDo(document("get-an-event"))
+                .andExpect(status().isBadRequest())
         ;
     }
 
     @Test
-    @DisplayName("이벤트 단일 조회 - 없는 경우")
-    public void getEvent404() throws Exception {
-        this.mockMvc.perform(get("/api/event/10000"))
+    @DisplayName("Event 수정 - 데이터가 잘못 되어서 실패")
+    public void update_400_wrong() throws Exception {
+        //given
+        String eventName = "Updated Event";
+        Event event = this.generateEvent(200);
+        EventDto eventDto = EventMapper.INSTANCE.toEventDto(event);
+        eventDto.setBasePrice(20000);
+        eventDto.setMaxPrice(1000);
+
+        //when-then
+        mockMvc.perform(put("/api/event/{id}", event.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(eventDto))
+                        .accept(MediaTypes.HAL_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+        ;
+    }
+
+    @Test
+    @DisplayName("Event 수정 - 존재하지 않아서 실패")
+    public void update_404() throws Exception {
+        //given
+        Event event = this.generateEvent(200);
+        EventDto eventDto = EventMapper.INSTANCE.toEventDto(event);
+
+        //when-then
+        mockMvc.perform(put("/api/event/10000")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(eventDto))
+                        .accept(MediaTypes.HAL_JSON)
+                )
+                .andDo(print())
                 .andExpect(status().isNotFound())
         ;
     }
 
     private Event generateEvent(int i) {
         Event event = Event.builder()
-                .name("event " + i)
-                .description("test event")
+                .name("spring")
+                .description("spring rest api")
+                .beginEnrollmentDateTime(LocalDateTime.of(2022, 7, 2, 14, 21))
+                .closeEnrollmentDateTime(LocalDateTime.of(2022, 7, 3, 14, 21))
+                .beginEventDateTime(LocalDateTime.of(2022, 7, 4, 14, 21))
+                .endEventDateTime(LocalDateTime.of(2022, 7, 5, 14, 21))
+                .basePrice(100)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("강남역 D2 스타텁 팩토리")
+                .eventStatus(EventStatus.DRAFT)
                 .build();
+
         return eventRepository.save(event);
     }
 

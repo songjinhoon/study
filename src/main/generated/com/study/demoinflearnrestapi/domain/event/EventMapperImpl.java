@@ -4,10 +4,32 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-10-06T10:31:13+0900",
+    date = "2022-10-07T16:21:24+0900",
     comments = "version: 1.5.2.Final, compiler: javac, environment: Java 11.0.16 (Amazon.com Inc.)"
 )
 public class EventMapperImpl implements EventMapper {
+
+    @Override
+    public EventDto toEventDto(Event event) {
+        if ( event == null ) {
+            return null;
+        }
+
+        EventDto.EventDtoBuilder eventDto = EventDto.builder();
+
+        eventDto.name( event.getName() );
+        eventDto.description( event.getDescription() );
+        eventDto.beginEnrollmentDateTime( event.getBeginEnrollmentDateTime() );
+        eventDto.closeEnrollmentDateTime( event.getCloseEnrollmentDateTime() );
+        eventDto.beginEventDateTime( event.getBeginEventDateTime() );
+        eventDto.endEventDateTime( event.getEndEventDateTime() );
+        eventDto.location( event.getLocation() );
+        eventDto.basePrice( event.getBasePrice() );
+        eventDto.maxPrice( event.getMaxPrice() );
+        eventDto.limitOfEnrollment( event.getLimitOfEnrollment() );
+
+        return eventDto.build();
+    }
 
     @Override
     public Event toEvent(EventDto eventDto) {
