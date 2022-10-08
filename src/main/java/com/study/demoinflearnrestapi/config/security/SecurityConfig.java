@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
-    @Override
+/*    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .anonymous() //익명 사용자 허용
@@ -60,6 +60,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/api/**").authenticated()
                 .anyRequest().authenticated()
                 ;
-    }
+    }*/
 
 }
