@@ -31,4 +31,8 @@ public class Member {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    public void updatePassword(String password) {
+        this.password = password;
+    }
+
 }

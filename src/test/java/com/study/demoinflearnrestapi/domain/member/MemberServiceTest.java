@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Set;
@@ -23,10 +24,10 @@ class MemberServiceTest {
     MemberService memberService;
 
     @Autowired
-    MemberRepository memberRepository;
+    PasswordEncoder passwordEncoder;
 
     @Test
-    @DisplayName("")
+    @DisplayName("시큐리티 인증 성공")
     public void findByUsername() {
         //given
         String account = "hijinhoon";
@@ -39,7 +40,7 @@ class MemberServiceTest {
                 .email(email)
                 .roles(Set.of(Role.ADMIN, Role.USER))
                 .build();
-        memberRepository.save(member);
+        memberService.save(member);
 
         //when
         UserDetailsService userDetailsService = memberService;
@@ -47,11 +48,12 @@ class MemberServiceTest {
 
         //then
         assertThat(userDetails.getUsername()).isEqualTo(account);
-        assertThat(userDetails.getPassword()).isEqualTo(password);
+        assertThat(passwordEncoder.matches(password, userDetails.getPassword())).isTrue();
     }
 
 //    @Test(expected = UsernameNotFoundException.class) -> junit4
     @Test
+    @DisplayName("시큐리티 인증 실패")
     public void findByUsernameFail() {
         String username = "randomDWadwajd8o1";
         UsernameNotFoundException assertThrows = assertThrows(UsernameNotFoundException.class, () -> memberService.loadUserByUsername(username));
