@@ -47,6 +47,10 @@ public class Event {
         this.offline = this.location != null && !this.location.isBlank();
     }
 
+    public void init(Member member) {
+        this.member = member;
+    }
+
     public void update(EventDto eventDto) {
         this.name = eventDto.getName();
         this.description = eventDto.getDescription();
