@@ -1,5 +1,6 @@
 package com.study.demoinflearnrestapi.domain.event;
 
+import com.study.demoinflearnrestapi.common.AppProperties;
 import com.study.demoinflearnrestapi.common.BaseControllerTest;
 import com.study.demoinflearnrestapi.domain.common.Role;
 import com.study.demoinflearnrestapi.domain.member.Member;
@@ -33,6 +34,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class EventControllerTest extends BaseControllerTest {
 
     @Autowired
+    AppProperties appProperties;
+
+    @Autowired
     EventRepository eventRepository;
 
     @Autowired
@@ -49,23 +53,19 @@ public class EventControllerTest extends BaseControllerTest {
 
     private String getAccessToken() throws Exception {
         //given
-        String clientId = "myApp";
-        String clientSecret = "pass";
-        String username = "hijinhoon";
-        String password = "hijinhoon123";
         Member member = Member.builder()
-                .account(username)
-                .password(password)
-                .email("hijinhoon@naver.com")
+                .account(appProperties.getUserUsername())
+                .password(appProperties.getUserPassword())
+                .email(appProperties.getUserEmail())
                 .roles(Set.of(Role.ADMIN, Role.USER))
                 .build();
         memberService.save(member);
 
         //when - then
         ResultActions resultActions = mockMvc.perform(post("/oauth/token")
-                        .with(httpBasic(clientId, clientSecret))
-                        .param("username", username)
-                        .param("password", password)
+                        .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret()))
+                        .param("username", appProperties.getUserUsername())
+                        .param("password", appProperties.getUserPassword())
                         .param("grant_type", "password")
                 )
                 .andDo(print())

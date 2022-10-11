@@ -730,8 +730,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h4 id="resources-events-create_curl_request"><a class="link" href="#resources-events-create_curl_request">Example request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/event/' -i -X POST \
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/event' -i -X POST \
     -H 'Content-Type: application/json;charset=UTF-8' \
+    -H 'Authorization: Bearer bsJlMXGqwcnmv-YitsXws6OcvuY' \
     -H 'Accept: application/hal+json' \
     -d '{
   "name" : "spring",
@@ -790,82 +791,72 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>code</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Code of new Event</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>message</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Message of New Event</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">id of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Name of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">description of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.beginEnrollmentDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>beginEnrollmentDateTime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">beginEnrollmentDateTime of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.closeEnrollmentDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>closeEnrollmentDateTime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">closeEnrollmentDateTime of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.beginEventDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>beginEventDateTime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">beginEventDateTime of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.endEventDateTime</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>endEventDateTime</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">endEventDateTime of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.location</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>location</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">location of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.basePrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>basePrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">basePrice of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.maxPrice</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>maxPrice</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">maxPrice of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.limitOfEnrollment</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>limitOfEnrollment</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">limitOfEnrollment of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.free</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>free</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">free of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.offline</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>offline</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">offline of new event</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>event.eventStatus</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>eventStatus</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">eventStatus of new event</p></td>
 </tr>
@@ -897,41 +888,44 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 201 Created
-Location: http://localhost:8080/api/event/1
+Location: http://localhost:8080/api/event/42
 Content-Type: application/hal+json
-Content-Length: 933
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 846
 
 {
-  "code" : "A0000",
-  "message" : "저장되었습니다.",
-  "event" : {
-    "id" : 1,
-    "name" : "spring",
-    "description" : "spring rest api",
-    "beginEnrollmentDateTime" : "2022-07-02T14:21:00",
-    "closeEnrollmentDateTime" : "2022-07-03T14:21:00",
-    "beginEventDateTime" : "2022-07-04T14:21:00",
-    "endEventDateTime" : "2022-07-05T14:21:00",
-    "location" : "강남역 D2 스타텁 팩토리",
-    "basePrice" : 100,
-    "maxPrice" : 200,
-    "limitOfEnrollment" : 100,
-    "offline" : true,
-    "free" : false,
-    "eventStatus" : "DRAFT"
-  },
+  "id" : 42,
+  "member" : null,
+  "name" : "spring",
+  "description" : "spring rest api",
+  "beginEnrollmentDateTime" : "2022-07-02T14:21:00",
+  "closeEnrollmentDateTime" : "2022-07-03T14:21:00",
+  "beginEventDateTime" : "2022-07-04T14:21:00",
+  "endEventDateTime" : "2022-07-05T14:21:00",
+  "location" : "강남역 D2 스타텁 팩토리",
+  "basePrice" : 100,
+  "maxPrice" : 200,
+  "limitOfEnrollment" : 100,
+  "offline" : true,
+  "free" : false,
+  "eventStatus" : "DRAFT",
   "_links" : {
     "self" : {
-      "href" : "http://localhost:8080/api/event/1"
+      "href" : "http://localhost:8080/api/event/42"
+    },
+    "profile" : {
+      "href" : "/docs/index.html#resources-events-create"
     },
     "query-events" : {
       "href" : "http://localhost:8080/api/event"
     },
     "update-events" : {
-      "href" : "http://localhost:8080/api/event/1"
-    },
-    "profile" : {
-      "href" : "/docs/index.html#resources-events-create"
+      "href" : "http://localhost:8080/api/event/42"
     }
   }
 }</code></pre>
@@ -1015,14 +1009,67 @@ Content-Length: 933
 </div>
 <div class="sect3">
 <h4 id="resources-events-update_curl_request"><a class="link" href="#resources-events-update_curl_request">Example request</a></h4>
-<div class="paragraph">
-<p>Snippet curl-request not found for operation::update-event</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code data-lang="bash" class="language-bash hljs">$ curl 'http://localhost:8080/api/event/39' -i -X PUT \
+    -H 'Content-Type: application/json;charset=UTF-8' \
+    -H 'Authorization: Bearer bsJlMXGqwcnmv-YitsXws6OcvuY' \
+    -H 'Accept: application/hal+json' \
+    -d '{
+  "name" : "Updated Event",
+  "description" : "spring rest api",
+  "beginEnrollmentDateTime" : "2022-07-02T14:21:00",
+  "closeEnrollmentDateTime" : "2022-07-03T14:21:00",
+  "beginEventDateTime" : "2022-07-04T14:21:00",
+  "endEventDateTime" : "2022-07-05T14:21:00",
+  "location" : "강남역 D2 스타텁 팩토리",
+  "basePrice" : 100,
+  "maxPrice" : 200,
+  "limitOfEnrollment" : 100
+}'</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="resources-events-update_http_response"><a class="link" href="#resources-events-update_http_response">Example response</a></h4>
-<div class="paragraph">
-<p>Snippet http-response not found for operation::update-event</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/hal+json
+X-Content-Type-Options: nosniff
+X-XSS-Protection: 1; mode=block
+Cache-Control: no-cache, no-store, max-age=0, must-revalidate
+Pragma: no-cache
+Expires: 0
+X-Frame-Options: DENY
+Content-Length: 686
+
+{
+  "id" : 39,
+  "member" : null,
+  "name" : "Updated Event",
+  "description" : "spring rest api",
+  "beginEnrollmentDateTime" : "2022-07-02T14:21:00",
+  "closeEnrollmentDateTime" : "2022-07-03T14:21:00",
+  "beginEventDateTime" : "2022-07-04T14:21:00",
+  "endEventDateTime" : "2022-07-05T14:21:00",
+  "location" : "강남역 D2 스타텁 팩토리",
+  "basePrice" : 100,
+  "maxPrice" : 200,
+  "limitOfEnrollment" : 100,
+  "offline" : false,
+  "free" : false,
+  "eventStatus" : "DRAFT",
+  "_links" : {
+    "self" : {
+      "href" : "http://localhost:8080/api/event/39"
+    },
+    "profile" : {
+      "href" : "/docs/index.html#resources-events-update"
+    }
+  }
+}</code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">

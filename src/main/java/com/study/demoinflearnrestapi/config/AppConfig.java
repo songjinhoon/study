@@ -1,5 +1,6 @@
 package com.study.demoinflearnrestapi.config;
 
+import com.study.demoinflearnrestapi.common.AppProperties;
 import com.study.demoinflearnrestapi.domain.common.Role;
 import com.study.demoinflearnrestapi.domain.member.Member;
 import com.study.demoinflearnrestapi.domain.member.MemberService;
@@ -22,7 +23,7 @@ public class AppConfig {
         return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
-    @Profile("default")
+//    @Profile("default")
     @Bean
     public ApplicationRunner applicationRunner() {
         return new ApplicationRunner() {
@@ -30,15 +31,25 @@ public class AppConfig {
             @Autowired
             MemberService memberService;
 
+            @Autowired
+            AppProperties appProperties;
+
             @Override
-            public void run(ApplicationArguments args) throws Exception {
-                Member member = Member.builder()
-                        .account("hijinhoon")
-                        .password("hijinhoon123")
-                        .email("hijinhoon@naver.com")
+            public void run(ApplicationArguments args) {
+                Member admin = Member.builder()
+                        .account(appProperties.getAdminUsername())
+                        .password(appProperties.getAdminPassword())
+                        .email(appProperties.getAdminEmail())
                         .roles(Set.of(Role.ADMIN, Role.USER))
                         .build();
-                memberService.save(member);
+                memberService.save(admin);
+                Member user = Member.builder()
+                        .account(appProperties.getUserUsername())
+                        .password(appProperties.getUserPassword())
+                        .email(appProperties.getUserEmail())
+                        .roles(Set.of(Role.USER))
+                        .build();
+                memberService.save(user);
             }
         };
 

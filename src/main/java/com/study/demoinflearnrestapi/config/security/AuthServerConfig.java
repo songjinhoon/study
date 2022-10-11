@@ -1,5 +1,6 @@
 package com.study.demoinflearnrestapi.config.security;
 
+import com.study.demoinflearnrestapi.common.AppProperties;
 import com.study.demoinflearnrestapi.domain.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,8 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 @Configuration
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
+    private final AppProperties appProperties;
+
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
@@ -33,10 +36,10 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.inMemory()
-                .withClient("myApp")
+                .withClient(appProperties.getClientId())
                 .authorizedGrantTypes("password", "refresh_token")
                 .scopes("read", "write")
-                .secret(passwordEncoder.encode("pass"))
+                .secret(passwordEncoder.encode(appProperties.getClientSecret()))
                 .accessTokenValiditySeconds(10 * 60)
                 .refreshTokenValiditySeconds(6 * 10 * 60);
     }

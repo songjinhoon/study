@@ -21,8 +21,6 @@ spring:
     deserialization:
       fail-on-unknown-properties: true # dto의 파라미터 바인딩을 느슨하게 하라면 제거
 
-
-
 logging:
   level:
     org.springframework.security: DEBUG
@@ -34,3 +32,13 @@ logging:
 #        descriptor:
 #          sql:
 #            BasicBinder: TRACE
+
+my-app:
+  client-id: myApp
+  client-secret: pass
+  admin-username: admin
+  admin-password: admin
+  admin-email: jinhoon0319@gmail.com
+  user-username: user
+  user-password: user
+  user-email: hijinhoon@naver.com

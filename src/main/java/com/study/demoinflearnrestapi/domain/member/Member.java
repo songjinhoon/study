@@ -5,7 +5,6 @@ import com.study.demoinflearnrestapi.domain.common.Role;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(of = "id")
@@ -21,10 +20,12 @@ public class Member {
     @Column(name = "member_id")
     private Integer id;
 
+    @Column(unique = true)
     private String account;
 
     private String password;
 
+    @Column(unique = true)
     private String email;
 
     @ElementCollection(fetch = FetchType.EAGER)
