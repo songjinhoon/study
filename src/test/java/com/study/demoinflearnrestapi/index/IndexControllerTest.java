@@ -1,13 +1,13 @@
 package com.study.demoinflearnrestapi.index;
 
-import com.study.demoinflearnrestapi.common.BaseControllerTest;
+import com.study.demoinflearnrestapi.common.BaseTest;
 import org.junit.jupiter.api.Test;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class IndexControllerTest extends BaseControllerTest {
+public class IndexControllerTest extends BaseTest {
 
     @Test
     public void index() throws Exception {

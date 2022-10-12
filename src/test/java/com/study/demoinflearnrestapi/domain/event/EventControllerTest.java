@@ -1,7 +1,7 @@
 package com.study.demoinflearnrestapi.domain.event;
 
 import com.study.demoinflearnrestapi.common.AppProperties;
-import com.study.demoinflearnrestapi.common.BaseControllerTest;
+import com.study.demoinflearnrestapi.common.BaseTest;
 import com.study.demoinflearnrestapi.domain.common.Role;
 import com.study.demoinflearnrestapi.domain.member.Member;
 import com.study.demoinflearnrestapi.domain.member.MemberRepository;
@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-public class EventControllerTest extends BaseControllerTest {
+public class EventControllerTest extends BaseTest {
 
     @Autowired
     AppProperties appProperties;
@@ -290,6 +290,7 @@ public class EventControllerTest extends BaseControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
                 .andExpect(jsonPath("id").exists())
                 .andExpect(jsonPath("free").value(false))
                 .andExpect(jsonPath("eventStatus").value(EventStatus.DRAFT.name()))

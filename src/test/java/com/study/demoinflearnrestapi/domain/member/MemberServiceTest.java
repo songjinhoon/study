@@ -1,26 +1,23 @@
 package com.study.demoinflearnrestapi.domain.member;
 
+import com.study.demoinflearnrestapi.common.BaseTest;
 import com.study.demoinflearnrestapi.domain.common.Role;
 import com.study.demoinflearnrestapi.domain.event.EventRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class MemberServiceTest {
+class MemberServiceTest extends BaseTest {
 
     @Autowired
     MemberService memberService;
@@ -65,13 +62,11 @@ class MemberServiceTest {
         assertThat(passwordEncoder.matches(password, userDetails.getPassword())).isTrue();
     }
 
-//    @Test(expected = UsernameNotFoundException.class) -> junit4
+    //    @Test(expected = UsernameNotFoundException.class) -> junit4
     @Test
     @DisplayName("시큐리티 인증 실패")
     public void findByUsernameFail() {
-        String username = "randomDWadwajd8o1";
-        UsernameNotFoundException assertThrows = assertThrows(UsernameNotFoundException.class, () -> memberService.loadUserByUsername(username));
-        assertEquals(username, assertThrows.getMessage());
+        assertThrows(UsernameNotFoundException.class, () -> memberService.loadUserByUsername("randomDWadwajd8o1"));
     }
 
 }

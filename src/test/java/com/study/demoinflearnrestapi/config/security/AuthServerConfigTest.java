@@ -1,7 +1,7 @@
 package com.study.demoinflearnrestapi.config.security;
 
 import com.study.demoinflearnrestapi.common.AppProperties;
-import com.study.demoinflearnrestapi.common.BaseControllerTest;
+import com.study.demoinflearnrestapi.common.BaseTest;
 import com.study.demoinflearnrestapi.domain.member.MemberService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-class AuthServerConfigTest extends BaseControllerTest {
+class AuthServerConfigTest extends BaseTest {
 
     @Autowired
     MemberService memberService;
