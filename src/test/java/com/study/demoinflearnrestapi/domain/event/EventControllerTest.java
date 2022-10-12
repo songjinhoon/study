@@ -50,16 +50,21 @@ public class EventControllerTest extends BaseControllerTest {
         this.memberRepository.deleteAll();
     }
 
-    private String getAccessToken() throws Exception {
-        //given
+    private Member postMember() {
         Member member = Member.builder()
                 .account(appProperties.getUserUsername())
                 .password(appProperties.getUserPassword())
                 .email(appProperties.getUserEmail())
                 .roles(Set.of(Role.ADMIN, Role.USER))
                 .build();
-        memberService.save(member);
+        return memberService.save(member);
+    }
 
+    private String getAccessToken(boolean needToPostMember) throws Exception {
+        //given
+        if (needToPostMember) {
+            postMember();
+        }
         //when - then
         ResultActions resultActions = mockMvc.perform(post("/oauth/token")
                         .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret()))
@@ -75,8 +80,8 @@ public class EventControllerTest extends BaseControllerTest {
         return jackson2JsonParser.parseMap(response).get("access_token").toString();
     }
 
-    private String getBearerToken() throws Exception {
-        return "Bearer " + getAccessToken();
+    private String getBearerToken(boolean needToPostMember) throws Exception {
+        return "Bearer " + getAccessToken(needToPostMember);
     }
 
     /*
@@ -160,11 +165,11 @@ public class EventControllerTest extends BaseControllerTest {
     */
 
     @Test
-    @DisplayName("이벤트 단일 조회")
-    public void find() throws Exception {
+    @DisplayName("get success")
+    public void getSuccess() throws Exception {
         //given
-        Event event = this.generateEvent(100);
-
+        Member member = postMember();
+        Event event = this.generateEvent(100, member);
         //when - then
         this.mockMvc.perform(get("/api/event/{id}", event.getId()))
                 .andDo(print())
@@ -215,7 +220,7 @@ public class EventControllerTest extends BaseControllerTest {
 
         // when - then
         this.mockMvc.perform(get("/api/event")
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(true))
                         .param("page", "1")
                         .param("size", "10")
                         .param("sort", "name,DESC")
@@ -251,7 +256,7 @@ public class EventControllerTest extends BaseControllerTest {
                 .build();
         // when - then
         mockMvc.perform(post("/api/event")
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(true))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
@@ -278,7 +283,7 @@ public class EventControllerTest extends BaseControllerTest {
                 .build();
 
         mockMvc.perform(post("/api/event")
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(true))
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaTypes.HAL_JSON)
                         .content(objectMapper.writeValueAsString(event)))
@@ -343,17 +348,18 @@ public class EventControllerTest extends BaseControllerTest {
     }
 
     @Test
-    @DisplayName("Event 수정")
-    public void update_success() throws Exception {
+    @DisplayName("put success")
+    public void putSuccess() throws Exception {
         //given
+        Member member = postMember();
         String eventName = "Updated Event";
-        Event event = this.generateEvent(100);
+        Event event = this.generateEvent(100, member);
         EventDto eventDto = EventMapper.INSTANCE.toEventDto(event);
         eventDto.setName(eventName);
 
         //when-then
         mockMvc.perform(put("/api/event/{id}", event.getId())
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(false))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(eventDto))
                         .accept(MediaTypes.HAL_JSON)
@@ -367,8 +373,8 @@ public class EventControllerTest extends BaseControllerTest {
     }
 
     @Test
-    @DisplayName("Event 수정 - 데이터가 비어있어서 실패")
-    public void update_400_empty() throws Exception {
+    @DisplayName("put fail - 데이터가 비어있어서 실패")
+    public void putFail400Empty() throws Exception {
         //given
         String eventName = "Updated Event";
         Event event = this.generateEvent(100);
@@ -377,7 +383,7 @@ public class EventControllerTest extends BaseControllerTest {
 
         //when-then
         mockMvc.perform(put("/api/event/{id}", event.getId())
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(true))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(eventDto))
                         .accept(MediaTypes.HAL_JSON)
@@ -388,8 +394,8 @@ public class EventControllerTest extends BaseControllerTest {
     }
 
     @Test
-    @DisplayName("Event 수정 - 데이터가 잘못 되어서 실패")
-    public void update_400_wrong() throws Exception {
+    @DisplayName("put fail - 데이터가 잘못 되어서 실패")
+    public void putFail400Wrong() throws Exception {
         //given
         String eventName = "Updated Event";
         Event event = this.generateEvent(200);
@@ -399,7 +405,7 @@ public class EventControllerTest extends BaseControllerTest {
 
         //when-then
         mockMvc.perform(put("/api/event/{id}", event.getId())
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(true))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(eventDto))
                         .accept(MediaTypes.HAL_JSON)
@@ -410,15 +416,15 @@ public class EventControllerTest extends BaseControllerTest {
     }
 
     @Test
-    @DisplayName("Event 수정 - 존재하지 않아서 실패")
-    public void update_404() throws Exception {
+    @DisplayName("put fail - 존재하지 않아서 실패")
+    public void putFail404() throws Exception {
         //given
         Event event = this.generateEvent(200);
         EventDto eventDto = EventMapper.INSTANCE.toEventDto(event);
 
         //when-then
         mockMvc.perform(put("/api/event/10000")
-                        .header(HttpHeaders.AUTHORIZATION, getBearerToken())
+                        .header(HttpHeaders.AUTHORIZATION, getBearerToken(true))
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(eventDto))
                         .accept(MediaTypes.HAL_JSON)
@@ -428,9 +434,20 @@ public class EventControllerTest extends BaseControllerTest {
         ;
     }
 
+    private Event generateEvent(int i, Member member) {
+        Event event = buildEvent(i);
+        event.init(member);
+        return eventRepository.save(event);
+    }
+
     private Event generateEvent(int i) {
-        Event event = Event.builder()
-                .name("spring")
+        Event event = buildEvent(i);
+        return eventRepository.save(event);
+    }
+
+    private Event buildEvent(int i) {
+        return Event.builder()
+                .name("spring " + i)
                 .description("spring rest api")
                 .beginEnrollmentDateTime(LocalDateTime.of(2022, 7, 2, 14, 21))
                 .closeEnrollmentDateTime(LocalDateTime.of(2022, 7, 3, 14, 21))
@@ -442,8 +459,6 @@ public class EventControllerTest extends BaseControllerTest {
                 .location("강남역 D2 스타텁 팩토리")
                 .eventStatus(EventStatus.DRAFT)
                 .build();
-
-        return eventRepository.save(event);
     }
 
 }

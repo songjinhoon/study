@@ -1,6 +1,8 @@
 package com.study.demoinflearnrestapi.domain.member;
 
 import com.study.demoinflearnrestapi.domain.common.Role;
+import com.study.demoinflearnrestapi.domain.event.EventRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,24 @@ class MemberServiceTest {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    MemberRepository memberRepository;
+
+    @Autowired
+    EventRepository eventRepository;
+
+    @BeforeEach
+    public void setUp() {
+        this.eventRepository.deleteAll();
+        this.memberRepository.deleteAll();
+    }
+
     @Test
     @DisplayName("시큐리티 인증 성공")
     public void findByUsername() {
         //given
         String account = "hijinhoon";
-        String password = "hijinhoon123";
+        String password = "hijinhoon";
         String email = "hijinhoon@naver.com";
 
         Member member = Member.builder()
