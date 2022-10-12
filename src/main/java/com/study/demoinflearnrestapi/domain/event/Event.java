@@ -1,6 +1,8 @@
 package com.study.demoinflearnrestapi.domain.event;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.study.demoinflearnrestapi.domain.member.Member;
+import com.study.demoinflearnrestapi.domain.member.MemberSerializer;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,6 +21,7 @@ public class Event {
     @Column(name = "event_id")
     private Integer id;
 
+    @JsonSerialize(using = MemberSerializer.class)
     @JoinColumn(name = "member_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;

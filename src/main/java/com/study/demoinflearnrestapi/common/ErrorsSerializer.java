@@ -1,4 +1,4 @@
-package com.study.demoinflearnrestapi.exception;
+package com.study.demoinflearnrestapi.common;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
