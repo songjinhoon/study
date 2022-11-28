@@ -17,7 +17,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    public List<User> findAll() {
+    public List<User> find() {
         return userRepository.findAll();
     }
 

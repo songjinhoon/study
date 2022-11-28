@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/user-service/user")
+@RequestMapping(value = "/user-service")
 @RestController
 public class UserController {
 
@@ -39,7 +39,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<?> find() {
-        return ResponseEntity.ok().body(UserDto.of(userService.findAll()));
+        return ResponseEntity.ok().body(UserDto.of(userService.find()));
     }
 
     /**
