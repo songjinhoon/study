@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping(value = "/user-service/user")
 @RestController
 public class UserController {
 
@@ -22,16 +22,37 @@ public class UserController {
 
     private final Environment environment;
 
+    /***** CHECK *****/
     @GetMapping("/health_check")
     public String status() {
-        return "It's Working in User Service";
+        return String.format("It's Working in User Service on PORT %s", environment.getProperty("local.server.port"));
     }
 
     @GetMapping("/welcome")
     public String welcome() {
         return environment.getProperty("greeting.message");
     }
+    /***** CHECK *****/
 
+    /**
+     * 일괄 조회
+     */
+    @GetMapping
+    public ResponseEntity<?> find() {
+        return ResponseEntity.ok().body(UserDto.of(userService.findAll()));
+    }
+
+    /**
+     * 단일 조회
+     */
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> find(@PathVariable String userId) {
+        return ResponseEntity.ok().body(UserDto.of(userService.find(userId)));
+    }
+
+    /**
+     * 저장
+     */
     @PostMapping
     public ResponseEntity<?> post(@Valid @RequestBody SaveUserDto saveUserDto) {
         User user = userService.saveUser(UserDto.of(saveUserDto));
