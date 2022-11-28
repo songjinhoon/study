@@ -9,7 +9,11 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class SaveUserDto {
+public class UserSaveDto {
+
+    @NotEmpty
+    @Size(min = 2)
+    private String account;
 
     @NotEmpty
     @Size(min = 2)
@@ -22,6 +26,6 @@ public class SaveUserDto {
 
     @NotEmpty
     @Size(min = 8)
-    private String pwd;
+    private String password;
 
 }

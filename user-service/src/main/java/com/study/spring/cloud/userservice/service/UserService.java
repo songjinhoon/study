@@ -26,7 +26,7 @@ public class UserService {
     }
 
     public User saveUser(UserDto userDto) {
-        userDto.setEncryptedPwd(passwordEncoder.encode(userDto.getPwd()));
+        userDto.setEncryptedPassword(passwordEncoder.encode(userDto.getPassword()));
         return userRepository.save(User.create(userDto));
     }
 

@@ -1,6 +1,6 @@
 package com.study.spring.cloud.userservice.controller;
 
-import com.study.spring.cloud.userservice.dto.SaveUserDto;
+import com.study.spring.cloud.userservice.dto.UserSaveDto;
 import com.study.spring.cloud.userservice.dto.UserDto;
 import com.study.spring.cloud.userservice.entity.User;
 import com.study.spring.cloud.userservice.service.UserService;
@@ -54,11 +54,11 @@ public class UserController {
      * 저장
      */
     @PostMapping
-    public ResponseEntity<?> post(@Valid @RequestBody SaveUserDto saveUserDto) {
-        User user = userService.saveUser(UserDto.of(saveUserDto));
+    public ResponseEntity<?> post(@Valid @RequestBody UserSaveDto userSaveDto) {
+        User user = userService.saveUser(UserDto.of(userSaveDto));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(user.getId())
+                .buildAndExpand(user.getUserId())
                 .toUri();
         return ResponseEntity.created(uri).build();
     }

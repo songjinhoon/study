@@ -17,22 +17,24 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)  // 널은 응답에서 제거하겠다.
 public class UserDto {
 
-    private String userId;
+    private Long userId;
+
+    private String account;
 
     private String email;
 
     private String name;
 
-    private String pwd;
+    private String password;
 
-    private String encryptedPwd;
+    private String encryptedPassword;
 
     private List<Order> orders;
 
-    public static UserDto of(SaveUserDto saveUserDto) {
+    public static UserDto of(UserSaveDto userSaveDto) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return modelMapper.map(saveUserDto, UserDto.class);
+        return modelMapper.map(userSaveDto, UserDto.class);
     }
 
     public static UserDto of(User user) {

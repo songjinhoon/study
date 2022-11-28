@@ -11,15 +11,15 @@ import java.util.UUID;
 @Builder(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
-@Table(name = "usr")
+@Table(name = "tn_user")
 public class User {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long userId;
 
     @Column(unique = true)
-    private String userId;
+    private String account;
 
     @Column(unique = true)
     private String email;
@@ -28,14 +28,15 @@ public class User {
     private String name;
 
     @Column(unique = true)
-    private String encryptedPwd;
+    private String encryptedPassword;
 
     public static User create(UserDto userDto) {
         return User.builder()
-                .userId(UUID.randomUUID().toString())
+//                .userId(UUID.randomUUID().toString())
+                .account(userDto.getAccount())
                 .email(userDto.getEmail())
                 .name(userDto.getName())
-                .encryptedPwd(userDto.getEncryptedPwd())
+                .encryptedPassword(userDto.getEncryptedPassword())
                 .build();
     }
 
