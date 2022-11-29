@@ -14,7 +14,6 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RequiredArgsConstructor
-@RequestMapping(value = "/user-service")
 @RestController
 public class UserController {
 
@@ -35,6 +34,19 @@ public class UserController {
     /***** CHECK *****/
 
     /**
+     * 회원가입
+     */
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signUp(@Valid @RequestBody UserSaveDto userSaveDto) {
+        User user = userService.saveUser(UserDto.of(userSaveDto));
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getUserId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    /**
      * 일괄 조회
      */
     @GetMapping
@@ -45,22 +57,9 @@ public class UserController {
     /**
      * 단일 조회
      */
-    @GetMapping("/{userId}")
-    public ResponseEntity<?> find(@PathVariable String userId) {
-        return ResponseEntity.ok().body(UserDto.of(userService.find(userId)));
-    }
-
-    /**
-     * 저장
-     */
-    @PostMapping
-    public ResponseEntity<?> post(@Valid @RequestBody UserSaveDto userSaveDto) {
-        User user = userService.saveUser(UserDto.of(userSaveDto));
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(user.getUserId())
-                .toUri();
-        return ResponseEntity.created(uri).build();
+    @GetMapping("/{id}")
+    public ResponseEntity<?> find(@PathVariable Long id) {
+        return ResponseEntity.ok().body(UserDto.of(userService.find(id)));
     }
 
 }

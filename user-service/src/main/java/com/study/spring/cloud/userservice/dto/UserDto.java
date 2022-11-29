@@ -31,10 +31,10 @@ public class UserDto {
 
     private List<Order> orders;
 
-    public static UserDto of(UserSaveDto userSaveDto) {
+    public static UserDto of(Object object) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        return modelMapper.map(userSaveDto, UserDto.class);
+        return modelMapper.map(object, UserDto.class);
     }
 
     public static UserDto of(User user) {
