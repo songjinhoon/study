@@ -42,7 +42,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             if (!isJwtValid(jwt)) {
                 return onError(exchange, "token is not valid");
             }
-
+            
             return chain.filter(exchange);
         };
     }
