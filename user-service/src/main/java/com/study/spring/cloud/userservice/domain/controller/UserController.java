@@ -1,6 +1,6 @@
 package com.study.spring.cloud.userservice.domain.controller;
 
-import com.study.spring.cloud.userservice.domain.dto.UserSaveDto;
+import com.study.spring.cloud.userservice.domain.dto.SignUpDto;
 import com.study.spring.cloud.userservice.domain.dto.UserDto;
 import com.study.spring.cloud.userservice.domain.entity.User;
 import com.study.spring.cloud.userservice.domain.service.UserService;
@@ -42,8 +42,8 @@ public class UserController {
      * 회원가입
      */
     @PostMapping("/sign-up")
-    public ResponseEntity<?> signUp(@Valid @RequestBody UserSaveDto userSaveDto) {
-        User user = userService.saveUser(UserDto.of(userSaveDto));
+    public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
+        User user = userService.saveUser(UserDto.of(signUpDto));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(user.getUserId())
