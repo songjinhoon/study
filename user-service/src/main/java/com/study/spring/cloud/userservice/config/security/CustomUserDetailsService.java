@@ -1,8 +1,8 @@
 package com.study.spring.cloud.userservice.config.security;
 
-import com.study.spring.cloud.userservice.dto.UserDto;
-import com.study.spring.cloud.userservice.entity.User;
-import com.study.spring.cloud.userservice.repository.UserRepository;
+import com.study.spring.cloud.userservice.domain.dto.UserDto;
+import com.study.spring.cloud.userservice.domain.entity.User;
+import com.study.spring.cloud.userservice.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

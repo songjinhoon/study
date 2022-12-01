@@ -1,9 +1,9 @@
-package com.study.spring.cloud.userservice.controller;
+package com.study.spring.cloud.userservice.domain.controller;
 
-import com.study.spring.cloud.userservice.dto.UserSaveDto;
-import com.study.spring.cloud.userservice.dto.UserDto;
-import com.study.spring.cloud.userservice.entity.User;
-import com.study.spring.cloud.userservice.service.UserService;
+import com.study.spring.cloud.userservice.domain.dto.UserSaveDto;
+import com.study.spring.cloud.userservice.domain.dto.UserDto;
+import com.study.spring.cloud.userservice.domain.entity.User;
+import com.study.spring.cloud.userservice.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;

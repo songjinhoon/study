@@ -1,7 +1,7 @@
-package com.study.spring.cloud.userservice.dto;
+package com.study.spring.cloud.userservice.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.study.spring.cloud.userservice.entity.User;
+import com.study.spring.cloud.userservice.domain.entity.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;

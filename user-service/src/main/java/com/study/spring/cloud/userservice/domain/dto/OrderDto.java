@@ -1,4 +1,4 @@
-package com.study.spring.cloud.userservice.dto;
+package com.study.spring.cloud.userservice.domain.dto;
 
 import lombok.Getter;
 import lombok.Setter;

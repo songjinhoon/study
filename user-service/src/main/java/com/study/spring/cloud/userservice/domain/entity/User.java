@@ -1,10 +1,9 @@
-package com.study.spring.cloud.userservice.entity;
+package com.study.spring.cloud.userservice.domain.entity;
 
-import com.study.spring.cloud.userservice.dto.UserDto;
+import com.study.spring.cloud.userservice.domain.dto.UserDto;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

@@ -1,7 +1,7 @@
 package com.study.spring.cloud.userservice.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.study.spring.cloud.userservice.dto.SignInDto;
+import com.study.spring.cloud.userservice.domain.dto.SignInDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;

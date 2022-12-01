@@ -1,6 +1,6 @@
-package com.study.spring.cloud.userservice.repository;
+package com.study.spring.cloud.userservice.domain.repository;
 
-import com.study.spring.cloud.userservice.entity.User;
+import com.study.spring.cloud.userservice.domain.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

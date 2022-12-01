@@ -1,6 +1,6 @@
 package com.study.spring.cloud.userservice.config.security;
 
-import com.study.spring.cloud.userservice.dto.UserDto;
+import com.study.spring.cloud.userservice.domain.dto.UserDto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
