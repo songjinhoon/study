@@ -30,7 +30,7 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
 
-        <!-- 클라우드가 제대로 갱신이 안되는 경우가 있음 -->
+        <!-- bootstrap.yml 을 제대로 읽어오기 위함 -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bootstrap</artifactId>
