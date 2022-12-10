@@ -35,9 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/sign-up").permitAll()
-                .antMatchers("/health_check").permitAll()
                 .antMatchers("/actuator/**").permitAll()
-                .anyRequest().authenticated()
                 .and()
                 .addFilter(getAuthenticationFilter());
         http.headers().frameOptions().disable();

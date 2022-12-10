@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
-import javax.persistence.criteria.Order;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,7 +28,7 @@ public class UserDto {
 
     private String encryptedPassword;
 
-    private List<Order> orders;
+    private List<OrderDto> orders;
 
     public static UserDto of(Object object) {
         ModelMapper modelMapper = new ModelMapper();
@@ -37,9 +36,9 @@ public class UserDto {
         return modelMapper.map(object, UserDto.class);
     }
 
-    public static UserDto of(User user) {
+    public static UserDto of(User user, List<OrderDto> orders) {
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
-        userDto.setOrders(new ArrayList<>());
+        userDto.setOrders(orders);
         return userDto;
     }
 

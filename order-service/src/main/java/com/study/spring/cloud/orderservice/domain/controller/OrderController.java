@@ -48,7 +48,7 @@ public class OrderController {
     /**
      * 저장
      * */
-    @PostMapping
+    @PostMapping("/order")
     public ResponseEntity<?> save(@RequestBody @Valid OrderSaveDto orderSaveDto) {
         Order save = orderService.save(OrderDto.of(orderSaveDto));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

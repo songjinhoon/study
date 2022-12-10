@@ -43,10 +43,10 @@ public class UserController {
      */
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp(@Valid @RequestBody SignUpDto signUpDto) {
-        User user = userService.saveUser(UserDto.of(signUpDto));
+        UserDto userDto = userService.saveUser(UserDto.of(signUpDto));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(user.getUserId())
+                .buildAndExpand(userDto.getUserId())
                 .toUri();
         return ResponseEntity.created(uri).build();
     }
@@ -56,7 +56,7 @@ public class UserController {
      */
     @GetMapping
     public ResponseEntity<?> find() {
-        return ResponseEntity.ok().body(UserDto.of(userService.find()));
+        return ResponseEntity.ok().body(userService.find());
     }
 
     /**
@@ -64,7 +64,7 @@ public class UserController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<?> find(@PathVariable Long id) {
-        return ResponseEntity.ok().body(UserDto.of(userService.find(id)));
+        return ResponseEntity.ok().body(userService.find(id));
     }
 
 }
