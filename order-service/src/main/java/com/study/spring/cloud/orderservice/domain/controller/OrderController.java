@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/order-service")
@@ -30,25 +31,25 @@ public class OrderController {
     /***** CHECK *****/
 
     /**
-     * 단일 조회
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable Long id) {
-        return ResponseEntity.ok().body(OrderDto.of(orderService.findById(id)));
+     * 조회 - 유저아이디
+     * */
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> findByUserId(@PathVariable UUID userId) {
+        return ResponseEntity.ok().body(OrderDto.of(orderService.findByUserId(userId)));
     }
 
     /**
-     * 일괄 조회 - 유저아이디
-     * */
-    @GetMapping("/{userId}/order")
-    public ResponseEntity<?> findByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok().body(OrderDto.of(orderService.findByUserId(userId)));
+     * 조회 - 상세
+     */
+    @GetMapping("/{id}/detail")
+    public ResponseEntity<?> findById(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(OrderDto.of(orderService.findById(id)));
     }
 
     /**
      * 저장
      * */
-    @PostMapping("/order")
+    @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @Valid OrderSaveDto orderSaveDto) {
         Order save = orderService.save(OrderDto.of(orderSaveDto));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()

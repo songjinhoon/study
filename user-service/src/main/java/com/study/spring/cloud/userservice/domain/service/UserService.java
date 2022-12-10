@@ -13,8 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -32,7 +34,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    private User findById(Long id) {
+    private User findById(UUID id) {
         return userRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
@@ -40,9 +42,10 @@ public class UserService {
         return UserDto.of(findAll());
     }
 
-    public UserDto find(Long id) {
-        ResponseEntity<List<OrderDto>> exchange = restTemplate.exchange(String.format(Objects.requireNonNull(environment.getProperty("order_service.url")), id) , HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {});
-        return UserDto.of(findById(id), exchange.getBody());
+    public UserDto find(UUID id) {
+//        ResponseEntity<List<OrderDto>> exchange = restTemplate.exchange(String.format(Objects.requireNonNull(environment.getProperty("order_service.url")), id) , HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {});
+        ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(String.format(Objects.requireNonNull(environment.getProperty("order_service.url")), id), Object[].class);
+        return UserDto.of(findById(id), Arrays.asList(Objects.requireNonNull(responseEntity.getBody())));
     }
 
     public UserDto saveUser(UserDto userDto) {

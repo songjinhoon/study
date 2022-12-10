@@ -3,9 +3,11 @@ package com.study.spring.cloud.orderservice.domain.entity;
 import com.study.spring.cloud.orderservice.domain.dto.OrderDto;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.UUID;
 
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -15,10 +17,14 @@ import java.util.Date;
 @Table(name = "tn_order")
 public class Order {
 
-    @Id @GeneratedValue
-    private Long orderId;
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "uuid2")
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID orderId;
 
-    private Long userId;
+    @Column(columnDefinition = "BINARY(16)")
+    private UUID userId;
 
     private String catalogId;
 

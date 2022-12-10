@@ -12,6 +12,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
@@ -63,7 +64,7 @@ public class UserController {
      * 단일 조회
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable Long id) {
+    public ResponseEntity<?> find(@PathVariable UUID id) {
         return ResponseEntity.ok().body(userService.find(id));
     }
 

@@ -1,7 +1,6 @@
 package com.study.spring.cloud.apigatewayservice.filter;
 
 import io.jsonwebtoken.Jwts;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
@@ -42,7 +41,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             if (!isJwtValid(jwt)) {
                 return onError(exchange, "token is not valid");
             }
-            
+
             return chain.filter(exchange);
         };
     }

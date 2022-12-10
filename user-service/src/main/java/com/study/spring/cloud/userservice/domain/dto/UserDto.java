@@ -9,6 +9,7 @@ import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
@@ -16,7 +17,7 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)  // 널은 응답에서 제거하겠다.
 public class UserDto {
 
-    private Long userId;
+    private UUID userId;
 
     private String account;
 
@@ -28,7 +29,7 @@ public class UserDto {
 
     private String encryptedPassword;
 
-    private List<OrderDto> orders;
+    private List<Object> orders;
 
     public static UserDto of(Object object) {
         ModelMapper modelMapper = new ModelMapper();
@@ -36,7 +37,7 @@ public class UserDto {
         return modelMapper.map(object, UserDto.class);
     }
 
-    public static UserDto of(User user, List<OrderDto> orders) {
+    public static UserDto of(User user, List<Object> orders) {
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
         userDto.setOrders(orders);
         return userDto;

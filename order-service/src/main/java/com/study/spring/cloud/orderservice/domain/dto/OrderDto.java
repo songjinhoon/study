@@ -7,15 +7,16 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class OrderDto {
 
-    private Long orderId;
+    private UUID orderId;
 
-    private Long userId;
+    private UUID userId;
 
     private String catalogId;
 
