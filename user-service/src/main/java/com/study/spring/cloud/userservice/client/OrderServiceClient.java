@@ -10,7 +10,7 @@ import java.util.UUID;
 @FeignClient(name = "order-service")
 public interface OrderServiceClient {
 
-    @GetMapping("/order-service/{userId}/fake")
+    @GetMapping("/order-service/{userId}")
     List<?> getOrders(@PathVariable UUID userId);
 
 }
