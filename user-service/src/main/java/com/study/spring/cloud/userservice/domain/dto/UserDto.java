@@ -29,7 +29,7 @@ public class UserDto {
 
     private String encryptedPassword;
 
-    private List<Object> orders;
+    private List<?> orders;
 
     public static UserDto of(Object object) {
         ModelMapper modelMapper = new ModelMapper();
@@ -37,7 +37,7 @@ public class UserDto {
         return modelMapper.map(object, UserDto.class);
     }
 
-    public static UserDto of(User user, List<Object> orders) {
+    public static UserDto of(User user, List<?> orders) {
         UserDto userDto = new ModelMapper().map(user, UserDto.class);
         userDto.setOrders(orders);
         return userDto;

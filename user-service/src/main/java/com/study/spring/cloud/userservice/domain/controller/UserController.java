@@ -2,7 +2,6 @@ package com.study.spring.cloud.userservice.domain.controller;
 
 import com.study.spring.cloud.userservice.domain.dto.SignUpDto;
 import com.study.spring.cloud.userservice.domain.dto.UserDto;
-import com.study.spring.cloud.userservice.domain.entity.User;
 import com.study.spring.cloud.userservice.domain.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
@@ -63,9 +62,9 @@ public class UserController {
     /**
      * 단일 조회
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<?> find(@PathVariable UUID id) {
-        return ResponseEntity.ok().body(userService.find(id));
+    @GetMapping("/{userId}")
+    public ResponseEntity<?> find(@PathVariable UUID userId) {
+        return ResponseEntity.ok().body(userService.find(userId));
     }
 
 }
