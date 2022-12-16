@@ -6,17 +6,18 @@ import lombok.Setter;
 import org.modelmapper.ModelMapper;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 public class CatalogDto {
 
-    private String id;
+    private UUID catalogId;
 
     private String name;
 
-    private Integer stock;
+    private Integer quantity;
 
     private Integer price;
 
