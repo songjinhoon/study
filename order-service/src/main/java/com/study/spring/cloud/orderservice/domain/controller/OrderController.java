@@ -4,6 +4,7 @@ import com.study.spring.cloud.orderservice.domain.dto.OrderDto;
 import com.study.spring.cloud.orderservice.domain.dto.OrderSaveDto;
 import com.study.spring.cloud.orderservice.domain.entity.Order;
 import com.study.spring.cloud.orderservice.domain.service.OrderService;
+import com.study.spring.cloud.orderservice.messagequeue.KafkaProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +21,8 @@ import java.util.UUID;
 public class OrderController {
 
     private final OrderService orderService;
+
+    private final KafkaProducer kafkaProducer;
 
     private final Environment environment;
 
@@ -52,6 +55,7 @@ public class OrderController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @Valid OrderSaveDto orderSaveDto) {
         Order save = orderService.save(OrderDto.of(orderSaveDto));
+        kafkaProducer.send("example-catalog-topic", OrderDto.of(save));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(save.getOrderId())
