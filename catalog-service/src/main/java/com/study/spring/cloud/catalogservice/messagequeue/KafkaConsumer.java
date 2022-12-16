@@ -35,7 +35,7 @@ public class KafkaConsumer {
             ex.printStackTrace();
         }
 
-        Catalog catalog = catalogRepository.findById((UUID) map.get("catalogId")).orElseThrow(IllegalArgumentException::new);
+        Catalog catalog = catalogRepository.findById((Long) map.get("catalogId")).orElseThrow(IllegalArgumentException::new);
         catalog.updateQuantity(catalog.getQuantity() - (Integer) map.get("quantity"));
     }
 

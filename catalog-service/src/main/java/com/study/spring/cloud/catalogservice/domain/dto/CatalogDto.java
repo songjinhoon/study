@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Setter
 public class CatalogDto {
 
-    private UUID catalogId;
+    private Long catalogId;
 
     private String name;
 
