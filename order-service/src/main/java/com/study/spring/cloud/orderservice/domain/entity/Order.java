@@ -26,7 +26,7 @@ public class Order {
     @Column(columnDefinition = "BINARY(16)")
     private UUID userId;
 
-    private String catalogId;
+    private Long catalogId;
 
     private Integer quantity;
 

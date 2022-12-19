@@ -23,7 +23,7 @@ public class KafkaConsumer {
     private final CatalogRepository catalogRepository;
 
     @Transactional
-    @KafkaListener(topics = "example-dash-catalog-topic")
+    @KafkaListener(topics = "example-catalog-topic")
     public void updateQuantity(String message) {
         log.info("Kafka message ==>" + message);
         Map<Object, Object> map = new HashMap<>();
@@ -35,7 +35,7 @@ public class KafkaConsumer {
             ex.printStackTrace();
         }
 
-        Catalog catalog = catalogRepository.findById((Long) map.get("catalogId")).orElseThrow(IllegalArgumentException::new);
+        Catalog catalog = catalogRepository.findById(Long.parseLong(map.get("catalogId").toString())).orElseThrow(IllegalArgumentException::new);
         catalog.updateQuantity(catalog.getQuantity() - (Integer) map.get("quantity"));
     }
 

@@ -5,12 +5,13 @@ import lombok.Setter;
 
 import java.util.UUID;
 
-@Getter @Setter
+@Getter
+@Setter
 public class OrderSaveDto {
 
     private UUID userId;
 
-    private String catalogId;
+    private Long catalogId;
 
     private Integer quantity;
 

@@ -18,7 +18,7 @@ public class OrderDto {
 
     private UUID userId;
 
-    private String catalogId;
+    private Long catalogId;
 
     private Integer quantity;
 
