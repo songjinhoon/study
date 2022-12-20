@@ -2,17 +2,16 @@ package com.study.spring.cloud.orderservice.domain.controller;
 
 import com.study.spring.cloud.orderservice.domain.dto.OrderDto;
 import com.study.spring.cloud.orderservice.domain.dto.OrderSaveDto;
-import com.study.spring.cloud.orderservice.domain.entity.Order;
 import com.study.spring.cloud.orderservice.domain.service.OrderService;
 import com.study.spring.cloud.orderservice.messagequeue.KafkaProducer;
+import com.study.spring.cloud.orderservice.messagequeue.OrderProducer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
-import java.net.URI;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -21,6 +20,8 @@ import java.util.UUID;
 public class OrderController {
 
     private final OrderService orderService;
+
+    private final OrderProducer orderProducer;
 
     private final KafkaProducer kafkaProducer;
 
@@ -35,7 +36,7 @@ public class OrderController {
 
     /**
      * 조회 - 유저아이디
-     * */
+     */
     @GetMapping("/{userId}")
     public ResponseEntity<?> findByUserId(@PathVariable UUID userId) {
         return ResponseEntity.ok().body(OrderDto.of(orderService.findByUserId(userId)));
@@ -51,16 +52,21 @@ public class OrderController {
 
     /**
      * 저장
-     * */
+     */
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @Valid OrderSaveDto orderSaveDto) {
-        Order save = orderService.save(OrderDto.of(orderSaveDto));
+/*        Order save = orderService.save(OrderDto.of(orderSaveDto));
         kafkaProducer.send("example-catalog-topic", OrderDto.of(save));
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(save.getOrderId())
                 .toUri();
-        return ResponseEntity.created(uri).body(OrderDto.of(save));
+        return ResponseEntity.created(uri).body(OrderDto.of(save));*/
+
+        OrderDto orderDto = OrderDto.of(orderSaveDto);
+        kafkaProducer.send("example-catalog-topic", orderDto); // 카탈로그 서비스와 연동
+        orderProducer.send("orders", orderDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
     }
 
 }
