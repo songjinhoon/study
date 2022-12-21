@@ -17,14 +17,16 @@ import java.util.UUID;
 @Table(name = "tn_order")
 public class Order {
 
-    @Id
+/*    @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column(columnDefinition = "BINARY(16)")
-    private UUID orderId;
+    private UUID orderId;*/
 
-    @Column(columnDefinition = "BINARY(16)")
-    private UUID userId;
+    @Id @GeneratedValue
+    private String orderId;
+
+    private String userId;
 
     private Long catalogId;
 

@@ -38,7 +38,7 @@ public class OrderController {
      * 조회 - 유저아이디
      */
     @GetMapping("/{userId}")
-    public ResponseEntity<?> findByUserId(@PathVariable UUID userId) {
+    public ResponseEntity<?> findByUserId(@PathVariable String userId) {
         return ResponseEntity.ok().body(OrderDto.of(orderService.findByUserId(userId)));
     }
 
@@ -46,7 +46,7 @@ public class OrderController {
      * 조회 - 상세
      */
     @GetMapping("/{id}/detail")
-    public ResponseEntity<?> findById(@PathVariable UUID id) {
+    public ResponseEntity<?> findById(@PathVariable String id) {
         return ResponseEntity.ok().body(OrderDto.of(orderService.findById(id)));
     }
 

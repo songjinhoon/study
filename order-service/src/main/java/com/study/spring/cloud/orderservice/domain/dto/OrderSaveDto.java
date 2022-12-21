@@ -9,7 +9,7 @@ import java.util.UUID;
 @Setter
 public class OrderSaveDto {
 
-    private UUID userId;
+    private String userId;
 
     private Long catalogId;
 

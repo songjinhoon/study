@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -15,11 +14,11 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
-    public Order findById(UUID id) {
+    public Order findById(String id) {
         return orderRepository.findById(id).orElseThrow(IllegalArgumentException::new);
     }
 
-    public List<Order> findByUserId(UUID userId) {
+    public List<Order> findByUserId(String userId) {
         return orderRepository.findByUserId(userId);
     }
 

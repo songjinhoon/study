@@ -14,9 +14,9 @@ import java.util.stream.Collectors;
 @Setter
 public class OrderDto {
 
-    private UUID orderId;
+    private String orderId;
 
-    private UUID userId;
+    private String userId;
 
     private Long catalogId;
 
@@ -38,6 +38,7 @@ public class OrderDto {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
         OrderDto orderDto = modelMapper.map(orderSaveDto, OrderDto.class);
+        orderDto.setOrderId(UUID.randomUUID().toString());
         orderDto.setTotalPrice(orderDto.getUnitPrice() * orderDto.getQuantity());
         return orderDto;
     }

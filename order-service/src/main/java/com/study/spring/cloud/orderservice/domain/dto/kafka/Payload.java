@@ -5,16 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Builder
 @Getter
 @Setter
 public class Payload {
 
-    private UUID order_id;
+    private String order_id;
 
-    private UUID user_id;
+    private String user_id;
 
     private Long catalog_id;
 
