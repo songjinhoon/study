@@ -3,15 +3,13 @@ package com.study.spring.cloud.userservice.domain.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.UUID;
-
 @Getter
 @Setter
 public class OrderDto {
 
-    private UUID orderId;
+    private String orderId;
 
-    private UUID userId;
+    private String userId;
 
     private String catalogId;
 

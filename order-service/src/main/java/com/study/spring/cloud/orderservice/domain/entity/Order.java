@@ -23,7 +23,7 @@ public class Order {
     @Column(columnDefinition = "BINARY(16)")
     private UUID orderId;*/
 
-    @Id @GeneratedValue
+    @Id
     private String orderId;
 
     private String userId;
@@ -42,6 +42,7 @@ public class Order {
 
     public static Order create(OrderDto orderDto) {
         return Order.builder()
+                .orderId(orderDto.getOrderId())
                 .userId(orderDto.getUserId())
                 .catalogId(orderDto.getCatalogId())
                 .quantity(orderDto.getQuantity())

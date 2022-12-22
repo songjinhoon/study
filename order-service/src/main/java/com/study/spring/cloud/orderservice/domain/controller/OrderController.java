@@ -2,6 +2,7 @@ package com.study.spring.cloud.orderservice.domain.controller;
 
 import com.study.spring.cloud.orderservice.domain.dto.OrderDto;
 import com.study.spring.cloud.orderservice.domain.dto.OrderSaveDto;
+import com.study.spring.cloud.orderservice.domain.entity.Order;
 import com.study.spring.cloud.orderservice.domain.service.OrderService;
 import com.study.spring.cloud.orderservice.messagequeue.KafkaProducer;
 import com.study.spring.cloud.orderservice.messagequeue.OrderProducer;
@@ -56,9 +57,14 @@ public class OrderController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @Valid OrderSaveDto orderSaveDto) {
         OrderDto orderDto = OrderDto.of(orderSaveDto);
+
+        Order order = orderService.save(orderDto);
+        /*
         kafkaProducer.send("example-catalog-topic", orderDto); // 카탈로그 서비스와 연동
         orderProducer.send("tn_order", orderDto); // 싱크커넥터를 이용해 tn_order 토픽을 바라보는 싱크커넥터를 이용하여 tn_order 데이터베이스에 데이터 저장
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
+        */
+        return ResponseEntity.status(HttpStatus.CREATED).body(OrderDto.of(order));
     }
 
 }
+

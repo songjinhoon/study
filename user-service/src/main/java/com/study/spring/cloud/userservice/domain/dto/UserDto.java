@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @JsonInclude(JsonInclude.Include.NON_NULL)  // 널은 응답에서 제거하겠다.
 public class UserDto {
 
-    private UUID userId;
+    private String userId;
 
     private String account;
 
