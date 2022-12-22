@@ -55,17 +55,9 @@ public class OrderController {
      */
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody @Valid OrderSaveDto orderSaveDto) {
-/*        Order save = orderService.save(OrderDto.of(orderSaveDto));
-        kafkaProducer.send("example-catalog-topic", OrderDto.of(save));
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(save.getOrderId())
-                .toUri();
-        return ResponseEntity.created(uri).body(OrderDto.of(save));*/
-
         OrderDto orderDto = OrderDto.of(orderSaveDto);
         kafkaProducer.send("example-catalog-topic", orderDto); // 카탈로그 서비스와 연동
-        orderProducer.send("orders", orderDto);
+        orderProducer.send("tn_order", orderDto); // 싱크커넥터를 이용해 tn_order 토픽을 바라보는 싱크커넥터를 이용하여 tn_order 데이터베이스에 데이터 저장
         return ResponseEntity.status(HttpStatus.CREATED).body(orderDto);
     }
 

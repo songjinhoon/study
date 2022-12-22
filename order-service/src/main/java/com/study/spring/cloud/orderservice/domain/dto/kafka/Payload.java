@@ -2,12 +2,12 @@ package com.study.spring.cloud.orderservice.domain.dto.kafka;
 
 import com.study.spring.cloud.orderservice.domain.dto.OrderDto;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Builder
-@Getter
-@Setter
+@Data
 public class Payload {
 
     private String order_id;

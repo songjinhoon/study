@@ -51,7 +51,7 @@ public class OrderProducer {
         }
 
         kafkaTemplate.send(topic, jsonInString);
-        log.info("Kafka Producer send data from order-service => " + kafkaOrderDto);
+        log.info("Order Producer send data from order-service => " + kafkaOrderDto.toString());
         return orderDto;
     }
 

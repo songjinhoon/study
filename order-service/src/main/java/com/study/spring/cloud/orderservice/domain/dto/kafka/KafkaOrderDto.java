@@ -1,12 +1,11 @@
 package com.study.spring.cloud.orderservice.domain.dto.kafka;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Builder
-@Getter
-@Setter
+@Data
 public class KafkaOrderDto {
 
     private Schema schema;
