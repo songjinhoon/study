@@ -46,11 +46,16 @@ public class UserService {
 //        ResponseEntity<List<OrderDto>> exchange = restTemplate.exchange(String.format(Objects.requireNonNull(environment.getProperty("order_service.url")), id) , HttpMethod.GET, null, new ParameterizedTypeReference<List<OrderDto>>() {});
 //        ResponseEntity<Object[]> responseEntity = restTemplate.getForEntity(String.format(Objects.requireNonNull(environment.getProperty("order_service.url")), id), Object[].class);
 //        return UserDto.of(findById(id), Arrays.asList(Objects.requireNonNull(responseEntity.getBody())));
+
+        log.info("Before call order-service");
+
         CircuitBreaker circuitbreaker = circuitBreakerFactory.create("circuitbreaker");
         List<?> orderDtos = circuitbreaker.run(
                 () -> orderServiceClient.getOrders(userId),
                 throwable -> List.of()
         );
+
+        log.info("After call order-service");
 
         return UserDto.of(findById(userId), orderDtos);
     }
