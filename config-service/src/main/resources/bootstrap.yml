@@ -2,8 +2,9 @@ encrypt:
 #  key: hoonskey20221206 -> 대칭키 암호화
   key-store:
     #윈도우
-    location: file:///${user.home}/project/keystore/apiEncryptionKey.jks
+#    location: file:///${user.home}/project/keystore/apiEncryptionKey.jks
     #맥
     #location: file://${user.home}/project/keystore/apiEncryptionKey.jks
+    location: file:/apiEncryptionKey.jks
     password: test1234
     alias: apiEncryptionKey
