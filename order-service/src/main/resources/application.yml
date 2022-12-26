@@ -37,5 +37,12 @@ eureka:
     service-url:
       defaultZone: http://127.0.0.1:8761/eureka
 
+
 logging.level:
   org.hibernate.SQL: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, httptrace, info, metrics, prometheus
