@@ -1,0 +1,44 @@
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://192.168.99.100:5432/postgres #docker tool box vm ip 이용
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#    defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+#        jdbc:
+#          non_contextual_creation: true
+    hibernate:
+      ddl-auto: create-drop
+#    sql:
+#      init:
+#        mode: always
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true # dto의 파라미터 바인딩을 느슨하게 하라면 제거
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+
+# 아래 옵션보단 p6spy로하자
+#    org.hibernate:
+#      SQL: DEBUG
+#      type:
+#        descriptor:
+#          sql:
+#            BasicBinder: TRACE
+
+my-app:
+  client-id: myApp
+  client-secret: pass
+  admin-username: admin
+  admin-password: admin
+  admin-email: jinhoon0319@gmail.com
+  user-username: user
+  user-password: user
+  user-email: hijinhoon@naver.com

@@ -1,0 +1,83 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.1'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2' // gradle 7 이상 일경우 사용
+    id 'java'
+}
+
+group = 'com.study'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    asciidoctorExtensions
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.security.oauth.boot:spring-security-oauth2-autoconfigure:2.5.2'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.8.1'
+
+    // Database
+    testRuntimeOnly 'com.h2database:h2' // H2 Database TestScope 로 활용하겠다.
+    runtimeOnly 'org.postgresql:postgresql'
+
+    // lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    /* lombok - mapstruct conflict issue -> mapStruct after lombok */
+    implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+
+    annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+
+//    testImplementation 'junit:junit:4.13.2'
+//    testImplementation 'pl.pragmatists:JUnitParams:1.1.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+}
+
+test {
+    useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    configurations "asciidoctorExtensions"
+    inputs.dir snippetsDir
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    copy {
+        from "${asciidoctor.outputDir}"
+        into 'BOOT-INF/classes/static/docs'
+    }
+    finalizedBy 'copyDocument'
+}
+
+task copyDocument(type: Copy) {
+    dependsOn bootJar
+    from file("build/docs/asciidoc")
+    into file("src/main/resources/static/docs")
+    delete file('BOOT-INF')
+}
